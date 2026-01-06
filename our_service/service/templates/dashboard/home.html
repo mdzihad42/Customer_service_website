@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Overview</h1>
+</div>
+
+<!-- Stats Grid -->
+<div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div class="card">
+        <h3>Total Services</h3>
+        <p style="font-size: 2.5rem; color: var(--primary-color); font-weight: 700;">{{ total_services }}</p>
+    </div>
+    <div class="card">
+        <h3>Team Members</h3>
+        <p style="font-size: 2.5rem; color: var(--success-color); font-weight: 700;">{{ total_team }}</p>
+    </div>
+    <div class="card">
+        <h3>Messages</h3>
+        <p style="font-size: 2.5rem; color: var(--accent-color); font-weight: 700;">{{ total_messages }}</p>
+    </div>
+</div>
+
+<!-- Recent Messages -->
+<div class="card">
+    <h2>Recent Contact Messages</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Subject</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in recent_messages %}
+            <tr>
+                <td>{{ msg.name }}</td>
+                <td>{{ msg.subject }}</td>
+                <td>{{ msg.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No messages yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

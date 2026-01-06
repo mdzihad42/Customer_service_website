@@ -1,0 +1,224 @@
+{% extends 'dashboard/base.html' %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        height: calc(100vh - 120px);
+        gap: 1.5rem;
+    }
+
+    .session-list {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow-y: auto;
+    }
+
+    .session-item {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .session-item:hover,
+    .session-item.active {
+        background: rgba(59, 130, 246, 0.1);
+    }
+
+    .session-item h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .session-item p {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .chat-window {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 600;
+    }
+
+    .messages-area {
+        flex: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .msg {
+        max-width: 70%;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+    .msg.admin {
+        align-self: flex-end;
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .msg.guest {
+        align-self: flex-start;
+        background: #334155;
+        color: white;
+    }
+
+    .msg-meta {
+        font-size: 0.7rem;
+        opacity: 0.7;
+        margin-top: 0.2rem;
+        display: block;
+        text-align: right;
+    }
+
+    .input-area {
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>Live Support Dashboard</h1>
+</div>
+
+<div class="chat-container">
+    <!-- Sidebar: Sessions -->
+    <div class="session-list">
+        {% for s in sessions %}
+        <div class="session-item" onclick="loadSession('{{ s.session_id }}', this)">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <h4>{{ s.session_id|slice:":8" }}...</h4>
+                <a href="{% url 'dashboard_chat_delete' s.session_id %}"
+                    onclick="event.stopPropagation(); return confirm('Are you sure you want to delete this chat session?');"
+                    style="color: #ef4444;">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+            <p>
+                {% if s.is_admin %}<i class="fas fa-reply"></i>{% endif %}
+                {{ s.last_message }}
+            </p>
+            <small style="color: #64748b;">{{ s.time|timesince }} ago</small>
+        </div>
+        {% empty %}
+        <div style="padding: 1rem; color: #94a3b8;">No active chats</div>
+        {% endfor %}
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window">
+        <div class="chat-header" id="activeSessionHeader">Select a session to chat</div>
+        <div class="messages-area" id="adminMessages">
+            <!-- Messages load here -->
+        </div>
+        <div class="input-area">
+            <input type="text" id="adminInput" placeholder="Type reply..." disabled>
+            <button class="btn btn-primary" id="adminSendBtn" disabled onclick="sendAdminMessage()"><i
+                    class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentSessionId = null;
+
+    async function loadSession(sessionId, elem) {
+        currentSessionId = sessionId;
+
+        // Update UI
+        document.querySelectorAll('.session-item').forEach(el => el.classList.remove('active'));
+        if (elem) elem.classList.add('active');
+
+        document.getElementById('activeSessionHeader').textContent = `Session: ${sessionId}`;
+        document.getElementById('adminInput').disabled = false;
+        document.getElementById('adminSendBtn').disabled = false;
+
+        await fetchMessages();
+    }
+
+    async function fetchMessages() {
+        if (!currentSessionId) return;
+
+        try {
+            const response = await fetch(`{% url 'chat_get' %}?session_id=${currentSessionId}`);
+            const data = await response.json();
+
+            const container = document.getElementById('adminMessages');
+            container.innerHTML = '';
+
+            data.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `msg ${msg.is_admin ? 'admin' : 'guest'}`;
+                div.innerHTML = `
+                    ${msg.message}
+                    <span class="msg-meta">${new Date(msg.created_at).toLocaleTimeString()}</span>
+                `;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        } catch (error) {
+            console.error('Error fetching chat:', error);
+        }
+    }
+
+    async function sendAdminMessage() {
+        const input = document.getElementById('adminInput');
+        const text = input.value.trim();
+        if (!text || !currentSessionId) return;
+
+        input.value = '';
+
+        try {
+            const formData = new FormData();
+            formData.append('message', text);
+            formData.append('session_id', currentSessionId);
+            formData.append('is_admin', 'true');
+
+            await fetch('{% url "chat_send" %}', {
+                method: 'POST',
+                body: formData
+            });
+
+            await fetchMessages();
+        } catch (error) {
+            console.error('Error sending:', error);
+        }
+    }
+
+    // Auto-refresh chat every 30s
+    setInterval(() => {
+        if (currentSessionId) fetchMessages();
+    }, 3000);
+
+    // Enter key
+    document.getElementById('adminInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendAdminMessage();
+    });
+</script>
+{% endblock %}

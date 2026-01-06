@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .header-section {
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2.5rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .project-card {
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .project-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .project-info {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-meta {
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .view-btn {
+        margin-top: auto;
+        display: inline-block;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: padding-left 0.2s;
+    }
+
+    .view-btn:hover {
+        padding-left: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 6rem 1rem 3rem;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem !important;
+        }
+
+        .projects-grid {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+            gap: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header-section">
+    <h1 class="gradient-text" style="font-size: 3rem;">Our Projects</h1>
+    <p style="color: #94a3b8; margin-top: 1rem;">Showcasing our best work and success stories</p>
+</div>
+
+<div class="projects-grid">
+    {% for project in projects %}
+    <div class="project-card glass">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
+        <div class="project-info">
+            <div class="project-meta">
+                <span><i class="fas fa-calendar"></i> {{ project.completed_date|date:"M Y" }}</span>
+                <span><i class="fas fa-building"></i> {{ project.client }}</span>
+            </div>
+            <h3 style="margin-bottom: 0.5rem;">{{ project.title }}</h3>
+            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{ project.description }}</p>
+            {% if project.live_url %}
+            <a href="{{ project.live_url }}" target="_blank" class="view-btn">View Live Project <i
+                    class="fas fa-arrow-right"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
+        <h3>No projects added yet.</h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

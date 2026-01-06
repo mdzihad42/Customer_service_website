@@ -1,0 +1,37 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>All Services</h1>
+    <a href="{% url 'dashboard_service_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Service</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Icon</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td>{{ service.title }}</td>
+                <td><i class="fa {{ service.icon }}"></i> {{ service.icon }}</td>
+                <td>{{ service.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <a href="{% url 'dashboard_service_edit' service.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_service_delete' service.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

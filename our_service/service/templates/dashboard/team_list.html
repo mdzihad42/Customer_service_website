@@ -1,0 +1,44 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Team Members</h1>
+    <a href="{% url 'dashboard_team_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Member</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in team %}
+            <tr>
+                <td>
+                    {% if member.photo %}
+                    <img src="{{ member.photo.url }}" alt=""
+                        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    {% else %}
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: #333;"></div>
+                    {% endif %}
+                </td>
+                <td>{{ member.name }}</td>
+                <td>{{ member.role }}</td>
+                <td>
+                    <a href="{% url 'dashboard_team_edit' member.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_team_delete' member.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

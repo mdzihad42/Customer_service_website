@@ -1,0 +1,53 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Client Testimonials</h1>
+    <a href="{% url 'dashboard_testimonial_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add
+        Testimonial</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Role</th>
+                <th>Company</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for testimonial in testimonials %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                        {% if testimonial.image %}
+                        <img src="{{ testimonial.image.url }}" alt="Client"
+                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                        {% else %}
+                        <div
+                            style="width: 32px; height: 32px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user" style="font-size: 0.8rem; color: #94a3b8;"></i>
+                        </div>
+                        {% endif %}
+                        {{ testimonial.client_name }}
+                    </div>
+                </td>
+                <td>{{ testimonial.client_role }}</td>
+                <td>{{ testimonial.company }}</td>
+                <td>{{ testimonial.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <a href="{% url 'dashboard_testimonial_edit' testimonial.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_testimonial_delete' testimonial.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

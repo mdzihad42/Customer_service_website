@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .header-section {
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+    }
+
+    .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .blog-card {
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .blog-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .blog-content {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .blog-meta {
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .read-more {
+        margin-top: auto;
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header-section">
+    <h1 class="gradient-text" style="font-size: 3rem;">Latest News & Insights</h1>
+    <p style="color: #94a3b8; margin-top: 1rem;">Trends, tutorials, and updates from our team</p>
+</div>
+
+<div class="blog-grid">
+    {% for post in posts %}
+    <div class="blog-card glass" onclick="window.location.href='{% url 'blog_detail' post.id %}'">
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-img">
+        {% else %}
+        <div class="blog-img" style="background: #334155; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-newspaper fa-3x" style="color: #64748b;"></i>
+        </div>
+        {% endif %}
+
+        <div class="blog-content">
+            <div class="blog-meta">
+                <span><i class="fas fa-user"></i> {{ post.author.username }}</span>
+                <span><i class="fas fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
+            </div>
+            <h3 style="margin-bottom: 0.8rem;">{{ post.title }}</h3>
+            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{
+                post.content|striptags|truncatewords:20 }}</p>
+            <div class="read-more">Read Article <i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
+        <h3>No blog posts available yet.</h3>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

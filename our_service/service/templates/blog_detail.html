@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .post-header {
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .post-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .post-image {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .post-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+        color: #cbd5e1;
+        white-space: pre-line;
+    }
+
+    .related-posts {
+        margin-top: 4rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 3rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="post-header">
+    <div style="margin-bottom: 1rem; color: var(--accent-color);">
+        <span>{{ post.created_at|date:"F d, Y" }}</span> &bull; <span>{{ post.author.username }}</span>
+    </div>
+    <h1 class="gradient-text" style="font-size: 3rem; max-width: 800px; margin: 0 auto;">{{ post.title }}</h1>
+</div>
+
+<article class="post-container">
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+    {% endif %}
+
+    <div class="glass" style="padding: 2.5rem;">
+        <div class="post-content">
+            {{ post.content }}
+        </div>
+    </div>
+
+    <div class="related-posts">
+        <h3 style="margin-bottom: 2rem;">Recent Posts</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            {% for recent in recent_posts %}
+            <div class="glass" style="padding: 1.5rem; cursor: pointer;"
+                onclick="window.location.href='{% url 'blog_detail' recent.id %}'">
+                <h4 style="margin-bottom: 0.5rem;">{{ recent.title }}</h4>
+                <small style="color: #94a3b8;">{{ recent.created_at|date:"M d, Y" }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Projects</h1>
+    <a href="{% url 'dashboard_project_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Project</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>
+                    <img src="{{ project.image.url }}" alt=""
+                        style="width: 60px; height: 40px; border-radius: 4px; object-fit: cover;">
+                </td>
+                <td>{{ project.title }}</td>
+                <td>{{ project.client }}</td>
+                <td>{{ project.completed_date|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'dashboard_project_edit' project.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_project_delete' project.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

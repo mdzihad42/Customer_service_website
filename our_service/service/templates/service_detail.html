@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .service-header {
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .service-details {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .technologies-list {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .tech-tag {
+        background: rgba(59, 130, 246, 0.2);
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .project-card {
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .project-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .project-info {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .view-btn {
+        margin-top: auto;
+        display: inline-block;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .service-header {
+            padding: 6rem 1rem 3rem;
+        }
+
+        .service-header h1 {
+            font-size: 2.5rem !important;
+        }
+
+        .service-details {
+            padding: 1rem;
+        }
+
+        .glass {
+            padding: 1.5rem !important;
+        }
+
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Service Header -->
+<div class="service-header">
+    <i class="fa {{ service.icon }}" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 2rem;"></i>
+    <h1 class="gradient-text" style="font-size: 3.5rem;">{{ service.title }}</h1>
+    <p style="color: #94a3b8; font-size: 1.2rem; margin-top: 1rem;">{{ service.description }}</p>
+</div>
+
+<!-- Detailed Content -->
+<section class="service-details">
+    <div class="glass" style="padding: 3rem; margin-bottom: 4rem;">
+        <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">What We Do</h2>
+        <div style="line-height: 1.8; color: #cbd5e1; font-size: 1.1rem; white-space: pre-line;">
+            {{ service.detailed_description|default:"Detailed description not available yet." }}
+        </div>
+
+        {% if service.get_technologies_list %}
+        <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Technologies We Use</h3>
+        <div class="technologies-list">
+            {% for tech in service.get_technologies_list %}
+            <span class="tech-tag">{{ tech }}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Related Projects -->
+    <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Recent {{ service.title }} Projects</h2>
+    <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card glass">
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
+            <div class="project-info">
+                <h3 style="margin-bottom: 0.5rem;">{{ project.title }}</h3>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{
+                    project.description|truncatewords:20 }}</p>
+                {% if project.live_url %}
+                <a href="{{ project.live_url }}" target="_blank" class="view-btn">View Case Study <i
+                        class="fas fa-arrow-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="glass" style="grid-column: 1/-1; padding: 2rem; text-align: center;">
+            <p>No projects listed under this category yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
