@@ -157,7 +157,7 @@
         transition: 0.5s;
     }
 
-    .service-card:hover::before {
+    .service-card::before {
         transform: translateX(100%);
     }
 
@@ -210,29 +210,90 @@
 
     /* Client Marquee */
     .marquee-container {
-        overflow: hidden;
+        overflow: visible;
+        /* Ensure nothing gets clipped if it pops out */
         white-space: nowrap;
-        padding: 2rem 0;
-        background: rgba(255, 255, 255, 0.02);
+        padding: 8rem 0;
+        /* Massive padding to allow logos to grow huge */
+        background: rgba(15, 23, 42, 0.3);
         margin: 4rem 0;
+        position: relative;
+        border-top: 1px solid var(--glass-border);
+        border-bottom: 1px solid var(--glass-border);
+        /* Masking edges but ensuring center is fully visible */
+        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* The Center Glass Lens */
+    .marquee-lens {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        /* Bigger lens */
+        height: 200px;
+        /* Much more subtle glossy reflection */
+        background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0) 51%, rgba(255, 255, 255, 0.05) 100%);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        /* Subtle Rim */
+        border-radius: 50%;
+        box-shadow:
+            0 5px 30px rgba(0, 0, 0, 0.2),
+            /* Softer Drop Shadow */
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
+        z-index: 100;
+        /* FORCE TOP */
+        pointer-events: none;
+        backdrop-filter: blur(0px);
+        /* Crystal clear */
+    }
+
+    /* A glow effect behind the lens for 'magic' feel */
+    .marquee-lens::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 70%);
+        z-index: -1;
     }
 
     .marquee-content {
-        display: inline-block;
-        animation: marquee 20s linear infinite;
+        display: inline-flex;
+        align-items: center;
+        animation: marquee 40s linear infinite;
+        /* Slower for effect */
+        z-index: 10;
+        /* Base layer - well below lens */
+        will-change: transform;
+    }
+
+    .marquee-container:hover .marquee-content {
+        animation-play-state: paused;
     }
 
     .client-logo {
-        height: 50px;
-        margin: 0 3rem;
-        opacity: 0.5;
-        transition: opacity 0.3s;
-        filter: grayscale(100%);
-    }
-
-    .client-logo:hover {
-        opacity: 1;
-        filter: grayscale(0%);
+        height: 60px;
+        /* Base size */
+        margin: 0 4rem;
+        opacity: 0.8;
+        /* HIGH VISIBILITY DEFAULT, REAL COLOR */
+        transition: opacity 0.1s linear;
+        cursor: pointer;
+        will-change: transform, opacity, filter;
+        transform-origin: center center;
+        position: relative;
+        z-index: 11;
+        /* Slightly above content base */
+        /* Ensure crisp rendering */
+        image-rendering: -webkit-optimize-contrast;
+        /* NO GRAYSCALE - REAL COLOR ALWAYS */
     }
 
     @keyframes marquee {
@@ -564,15 +625,16 @@
 </section>
 
 <!-- Clients Marquee -->
+<!-- Clients Marquee -->
 {% if clients %}
 <div class="marquee-container">
+    <div class="marquee-lens"></div> <!-- Glass Lens Effect -->
     <div class="marquee-content">
+        <!-- Render 4 times for smoother loop on wide screens -->
+        {% for i in "1234" %}
         {% for client in clients %}
-        <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo">
+        <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo" title="{{ client.name }}">
         {% endfor %}
-        <!-- Duplicate for seamless loop -->
-        {% for client in clients %}
-        <img src="{{ client.logo.url }}" alt="{{ client.name }}" class="client-logo">
         {% endfor %}
     </div>
 </div>
@@ -639,7 +701,8 @@
             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
             <div class="project-info">
                 <h3>{{ project.title }}</h3>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{ project.description|truncatewords:20 }}</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{
+                    project.description|truncatewords:20 }}</p>
                 {% if project.live_url %}
                 <a href="{{ project.live_url }}" target="_blank"
                     style="color: var(--accent-color); font-weight: 600;">View Live <i
@@ -703,9 +766,36 @@
                 {% endif %}
                 <div>
                     <h4 style="font-size: 1rem; margin: 0;">{{ testimonial.client_name }}</h4>
-                    <span style="font-size: 0.8rem; color: #94a3b8;">{{ testimonial.client_role }}, {{ testimonial.company }}</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8;">{{ testimonial.client_role }}, {{
+                        testimonial.company }}</span>
                 </div>
             </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+
+
+<!-- Tech Stack -->
+{% if tech_stacks %}
+<section style="padding: 4rem 2rem;">
+    <div class="section-title">
+        <h2>Our <span class="highlight">Technology</span> Stack</h2>
+        <p style="color: #94a3b8;">The tools we use to build world-class solutions.</p>
+    </div>
+    <div
+        style="display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; max-width: 1000px; margin: 0 auto; align-items: center;">
+        {% for tech in tech_stacks %}
+        <div class="tech-item" style="text-align: center; transition: transform 0.3s;"
+            onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <div
+                style="width: 80px; height: 80px; background: rgba(255, 255, 255, 0.05); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); margin: 0 auto 1rem;">
+                <img src="{{ tech.logo.url }}" alt="{{ tech.name }}"
+                    style="max-width: 50px; max-height: 50px; transition: transform 0.3s;">
+            </div>
+            <p style="color: #cbd5e1; font-weight: 500;">{{ tech.name }}</p>
         </div>
         {% endfor %}
     </div>
@@ -827,72 +917,138 @@
 </section>
 
 <!-- Contact Section -->
-<section id="contact">
+<section id="contact" style="position: relative; overflow: hidden;">
+    <!-- Background Decor -->
+    <div
+        style="position: absolute; top: 20%; left: -10%; width: 400px; height: 400px; background: var(--primary-color); filter: blur(180px); opacity: 0.1; border-radius: 50%; pointer-events: none;">
+    </div>
+
     <div class="section-title">
         <h2>Get In <span class="highlight">Touch</span></h2>
+        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Have a project in mind? Let's discuss how we can
+            help your business grow.</p>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
 
-        <!-- Office Info -->
-        <div class="glass" style="padding: 2.5rem;">
-            <h3 style="margin-bottom: 2rem;">Contact Information</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
 
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                <div
-                    style="width: 50px; height: 50px; background: rgba(59, 130, 246, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem;">
-                    <i class="fas fa-map-marker-alt"></i>
+        <!-- Left Column: Info & Booking -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+            <!-- Office Info Card -->
+            <div class="glass" style="padding: 2.5rem; border-left: 4px solid var(--primary-color);">
+                <h3 style="margin-bottom: 2rem; font-size: 1.5rem;">Contact Information</h3>
+
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start;">
+                    <div
+                        style="min-width: 50px; height: 50px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem; border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Our Office</h4>
+                        <p style="color: #cbd5e1; line-height: 1.6;">{{ office.address|default:"123 Innovation Dr, Tech
+                            City" }}</p>
+                    </div>
                 </div>
-                <div>
-                    <h4>Address</h4>
-                    <p style="color: #cbd5e1;">{{ office.address|default:"123 Innovation Dr, Tech City" }}</p>
+
+                <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; align-items: flex-start;">
+                    <div
+                        style="min-width: 50px; height: 50px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem; border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Phone Us</h4>
+                        <p style="color: #cbd5e1;">{{ office.phone|default:"+1 234 567 890" }}</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                    <div
+                        style="min-width: 50px; height: 50px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem; border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Email Us</h4>
+                        <p style="color: #cbd5e1;">{{ office.email|default:"contact@agency.com" }}</p>
+                    </div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <!-- Booking CTA Card -->
+            <div class="glass"
+                style="padding: 2.5rem; text-align: center; border: 1px solid var(--primary-color); position: relative; overflow: hidden;">
                 <div
-                    style="width: 50px; height: 50px; background: rgba(59, 130, 246, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem;">
-                    <i class="fas fa-phone"></i>
+                    style="position: absolute; top: 0; right: 0; width: 100px; height: 100px; background: linear-gradient(135deg, transparent 50%, var(--primary-color) 50%); opacity: 0.1;">
                 </div>
-                <div>
-                    <h4>Phone</h4>
-                    <p style="color: #cbd5e1;">{{ office.phone|default:"+1 234 567 890" }}</p>
-                </div>
+
+                <i class="fas fa-calendar-alt fa-3x"
+                    style="color: var(--primary-color); margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));"></i>
+                <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Schedule a Meeting</h3>
+                <p style="color: #cbd5e1; margin-bottom: 2rem;">Skip the email tag. Book a free 30-minute consultation
+                    directly on our calendar.</p>
+
+                {% if office.booking_url %}
+                <a href="{{ office.booking_url }}" target="_blank" class="btn btn-primary"
+                    style="width: 100%; justify-content: center; font-weight: 700;">
+                    <i class="fas fa-video" style="margin-right: 8px;"></i> Book Free Consultation
+                </a>
+                {% else %}
+                <button class="btn btn-primary" disabled
+                    style="width: 100%; justify-content: center; opacity: 0.5; cursor: not-allowed;">
+                    <i class="fas fa-clock" style="margin-right: 8px;"></i> Coming Soon
+                </button>
+                {% endif %}
             </div>
 
-            <div style="display: flex; gap: 1rem;">
-                <div
-                    style="width: 50px; height: 50px; background: rgba(59, 130, 246, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-color); font-size: 1.2rem;">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div>
-                    <h4>Email</h4>
-                    <p style="color: #cbd5e1;">{{ office.email|default:"contact@agency.com" }}</p>
-                </div>
-            </div>
         </div>
 
-        <!-- Contact Form -->
-        <form action="{% url 'contact_submit' %}" method="POST" class="glass"
-            style="padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
-            {% csrf_token %}
-            <div>
-                <input type="text" name="name" placeholder="Your Name" required
-                    style="width: 100%; padding: 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; outline: none; transition: border-color 0.3s;">
-            </div>
-            <div>
-                <input type="email" name="email" placeholder="Your Email" required
-                    style="width: 100%; padding: 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; outline: none; transition: border-color 0.3s;">
-            </div>
-            <div>
-                <input type="text" name="subject" placeholder="Subject"
-                    style="width: 100%; padding: 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; outline: none; transition: border-color 0.3s;">
-            </div>
-            <div>
-                <textarea name="message" rows="4" placeholder="Your Message" required
-                    style="width: 100%; padding: 1rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 8px; color: white; outline: none; transition: border-color 0.3s; resize: none;"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="border: none; cursor: pointer;">Send Message</button>
-        </form>
+        <!-- Right Column: Contact Form -->
+        <div class="glass" style="padding: 3rem; position: relative;">
+            <h3 style="margin-bottom: 2rem; font-size: 1.8rem;">Send a Message</h3>
+            <form action="{% url 'contact_submit' %}" method="POST"
+                style="display: flex; flex-direction: column; gap: 1.5rem;">
+                {% csrf_token %}
+
+                <div style="position: relative;">
+                    <i class="fas fa-user"
+                        style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                    <input type="text" name="name" placeholder="Your Name" required
+                        style="width: 100%; padding: 1rem 1rem 1rem 3rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; color: white; outline: none; transition: all 0.3s; font-size: 1rem;"
+                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 15px rgba(59, 130, 246, 0.2)'"
+                        onblur="this.style.borderColor='var(--glass-border)'; this.style.boxShadow='none'">
+                </div>
+
+                <div style="position: relative;">
+                    <i class="fas fa-envelope"
+                        style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                    <input type="email" name="email" placeholder="Your Email Address" required
+                        style="width: 100%; padding: 1rem 1rem 1rem 3rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; color: white; outline: none; transition: all 0.3s; font-size: 1rem;"
+                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 15px rgba(59, 130, 246, 0.2)'"
+                        onblur="this.style.borderColor='var(--glass-border)'; this.style.boxShadow='none'">
+                </div>
+
+                <div style="position: relative;">
+                    <i class="fas fa-tag"
+                        style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: #94a3b8;"></i>
+                    <input type="text" name="subject" placeholder="Subject"
+                        style="width: 100%; padding: 1rem 1rem 1rem 3rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; color: white; outline: none; transition: all 0.3s; font-size: 1rem;"
+                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 15px rgba(59, 130, 246, 0.2)'"
+                        onblur="this.style.borderColor='var(--glass-border)'; this.style.boxShadow='none'">
+                </div>
+
+                <div>
+                    <textarea name="message" rows="5" placeholder="Tell us about your project..." required
+                        style="width: 100%; padding: 1.2rem; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; color: white; outline: none; transition: all 0.3s; resize: vertical; font-size: 1rem; font-family: inherit;"
+                        onfocus="this.style.borderColor='var(--primary-color)'; this.style.boxShadow='0 0 15px rgba(59, 130, 246, 0.2)'"
+                        onblur="this.style.borderColor='var(--glass-border)'; this.style.boxShadow='none'"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary"
+                    style="border: none; cursor: pointer; padding: 1.2rem; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem;">
+                    Send Message <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+
     </div>
 </section>
 
@@ -910,4 +1066,64 @@
         <p style="color: #475569;">&copy; 2024 DevSquad Digital Services. All rights reserved.</p>
     </div>
 </footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.marquee-container');
+        const logos = document.querySelectorAll('.client-logo');
+
+        if (!container || logos.length === 0) return;
+
+        function checkMagnification() {
+            // Get center relative to viewport
+            const containerRect = container.getBoundingClientRect();
+            const containerCenter = containerRect.left + (containerRect.width / 2);
+
+            // "Hot Zone": The area where magnification happens.
+            // Lens is 200px wide (radius 100). Hot zone should be generous.
+            const hotZone = 160;
+
+            logos.forEach(logo => {
+                const rect = logo.getBoundingClientRect();
+                const logoCenter = rect.left + (rect.width / 2);
+
+                // Distance from center
+                const dist = Math.abs(containerCenter - logoCenter);
+
+                if (dist < hotZone) {
+                    // Calculate intensity (0 to 1) 
+                    const rawFactor = 1 - (dist / hotZone);
+
+                    // Easing: Use squared function to make the peak steeper and edges smoother
+                    const factor = Math.pow(rawFactor, 2);
+
+                    // Scale: Base 0.8 -> Max 4.8 (Huge, basically filling properly)
+                    // 60px * 4.8 = 288px (Larger than lens, ensures nice fill)
+                    const scale = 0.8 + (4.0 * factor);
+
+                    logo.style.transform = `scale(${scale})`;
+                    logo.style.opacity = 0.8 + (0.2 * factor);
+                    logo.style.zIndex = 40; // High, but UNDER the lens (100)
+
+                    // Keep real color, just add a nice glow and slight saturation boost to pop
+                    const saturate = 1 + (0.5 * factor); // Subtle boost, keeps it real
+                    const dropShadowOpacity = 0.4 + (0.4 * factor);
+                    logo.style.filter = `saturate(${saturate}) drop-shadow(0 0 25px rgba(59, 130, 246, ${dropShadowOpacity}))`;
+
+                } else {
+                    logo.style.transform = 'scale(0.8)';
+                    logo.style.opacity = '0.7';
+                    logo.style.zIndex = '11';
+                    logo.style.filter = 'none'; // REAL COLOR
+                }
+            });
+
+            requestAnimationFrame(checkMagnification);
+        }
+
+        checkMagnification();
+    });
+</script>
 {% endblock %}

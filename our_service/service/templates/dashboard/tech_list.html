@@ -1,0 +1,45 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Technology Stack</h1>
+    <a href="{% url 'dashboard_tech_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Tech</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Name</th>
+                <th>Website</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tech in techs %}
+            <tr>
+                <td>
+                    {% if tech.logo %}
+                    <img src="{{ tech.logo.url }}" alt="{{ tech.name }}"
+                        style="width: 40px; height: 40px; object-fit: contain; background: white; padding: 5px; border-radius: 4px;">
+                    {% else %}
+                    <i class="fas fa-microchip"></i>
+                    {% endif %}
+                </td>
+                <td>{{ tech.name }}</td>
+                <td><a href="{{ tech.website_url }}" target="_blank" style="color: var(--primary-color);">{{
+                        tech.website_url }}</a></td>
+                <td>
+                    <a href="{% url 'dashboard_tech_edit' tech.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_tech_delete' tech.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

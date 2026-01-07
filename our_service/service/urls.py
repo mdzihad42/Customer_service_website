@@ -50,4 +50,19 @@ urlpatterns = [
     path('custom-admin/testimonials/new/', views.dashboard_testimonial_edit, name='dashboard_testimonial_create'),
     path('custom-admin/testimonials/edit/<int:pk>/', views.dashboard_testimonial_edit, name='dashboard_testimonial_edit'),
     path('custom-admin/testimonials/delete/<int:pk>/', views.dashboard_testimonial_delete, name='dashboard_testimonial_delete'),
+
+    path('custom-admin/tech/', views.dashboard_tech_list, name='dashboard_tech_list'),
+    path('custom-admin/tech/new/', views.dashboard_tech_edit, name='dashboard_tech_create'),
+    path('custom-admin/tech/edit/<int:pk>/', views.dashboard_tech_edit, name='dashboard_tech_edit'),
+    path('custom-admin/tech/delete/<int:pk>/', views.dashboard_tech_delete, name='dashboard_tech_delete'),
+
+    path('custom-admin/pricing/', views.dashboard_pricing, name='dashboard_pricing'),
+    path('custom-admin/pricing/new/', views.dashboard_pricing_edit, name='dashboard_pricing_create'),
+    path('custom-admin/pricing/edit/<int:pk>/', views.dashboard_pricing_edit, name='dashboard_pricing_edit'),
+    path('custom-admin/pricing/delete/<int:pk>/', views.dashboard_pricing_delete, name='dashboard_pricing_delete'),
+
+    path('custom-admin/clients/', views.dashboard_clients, name='dashboard_clients'),
+    path('custom-admin/clients/new/', views.dashboard_client_edit, name='dashboard_client_create'),
+    path('custom-admin/clients/edit/<int:pk>/', views.dashboard_client_edit, name='dashboard_client_edit'),
+    path('custom-admin/clients/delete/<int:pk>/', views.dashboard_client_delete, name='dashboard_client_delete'),
 ]

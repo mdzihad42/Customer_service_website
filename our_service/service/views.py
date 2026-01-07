@@ -8,8 +8,8 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 import dns.resolver
 
-from .models import Service, TeamMember, OfficeInfo, ContactMessage, ChatMessage, Project, BlogPost, CompanyProfile, Testimonial, FAQ, PricingPlan, ClientLogo
-from .forms import ServiceForm, TeamMemberForm, OfficeInfoForm, ProjectForm, BlogPostForm, CompanyProfileForm, TestimonialForm
+from .models import Service, TeamMember, OfficeInfo, ContactMessage, ChatMessage, Project, BlogPost, CompanyProfile, Testimonial, FAQ, PricingPlan, ClientLogo, TechStack
+from .forms import ServiceForm, TeamMemberForm, OfficeInfoForm, ProjectForm, BlogPostForm, CompanyProfileForm, TestimonialForm, TechStackForm, PricingPlanForm, ClientLogoForm
 from django.db.models import Count, Max
 import uuid
 
@@ -26,7 +26,9 @@ def home(request):
     testimonials = Testimonial.objects.order_by('-created_at')[:5]
     faqs = FAQ.objects.all()
     pricing_plans = PricingPlan.objects.all()
+    pricing_plans = PricingPlan.objects.all()
     clients = ClientLogo.objects.all()
+    tech_stacks = TechStack.objects.all()
     
     context = {
         'services': services,
@@ -37,7 +39,8 @@ def home(request):
         'testimonials': testimonials,
         'faqs': faqs,
         'pricing_plans': pricing_plans,
-        'clients': clients
+        'clients': clients,
+        'tech_stacks': tech_stacks
     }
     return render(request, 'home.html', context)
 
@@ -384,3 +387,87 @@ def dashboard_testimonial_delete(request, pk):
     testimonial = get_object_or_404(Testimonial, pk=pk)
     testimonial.delete()
     return redirect('dashboard_testimonials')
+
+@staff_member_required
+def dashboard_tech_list(request):
+    techs = TechStack.objects.all()
+    return render(request, 'dashboard/tech_list.html', {'techs': techs})
+
+@staff_member_required
+def dashboard_tech_edit(request, pk=None):
+    if pk:
+        tech = get_object_or_404(TechStack, pk=pk)
+    else:
+        tech = None
+
+    if request.method == 'POST':
+        form = TechStackForm(request.POST, request.FILES, instance=tech)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_tech_list')
+    else:
+        form = TechStackForm(instance=tech)
+
+    return render(request, 'dashboard/form.html', {'form': form, 'title': 'Technology'})
+
+@staff_member_required
+def dashboard_tech_delete(request, pk):
+    tech = get_object_or_404(TechStack, pk=pk)
+    tech.delete()
+    return redirect('dashboard_tech_list')
+
+@staff_member_required
+def dashboard_pricing(request):
+    plans = PricingPlan.objects.all()
+    return render(request, 'dashboard/pricing_list.html', {'plans': plans})
+
+@staff_member_required
+def dashboard_pricing_edit(request, pk=None):
+    if pk:
+        plan = get_object_or_404(PricingPlan, pk=pk)
+    else:
+        plan = None
+
+    if request.method == 'POST':
+        form = PricingPlanForm(request.POST, request.FILES, instance=plan)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_pricing')
+    else:
+        form = PricingPlanForm(instance=plan)
+
+    return render(request, 'dashboard/form.html', {'form': form, 'title': 'Pricing Plan'})
+
+@staff_member_required
+def dashboard_pricing_delete(request, pk):
+    plan = get_object_or_404(PricingPlan, pk=pk)
+    plan.delete()
+    return redirect('dashboard_pricing')
+
+@staff_member_required
+def dashboard_clients(request):
+    clients = ClientLogo.objects.all()
+    return render(request, 'dashboard/client_list.html', {'clients': clients})
+
+@staff_member_required
+def dashboard_client_edit(request, pk=None):
+    if pk:
+        client = get_object_or_404(ClientLogo, pk=pk)
+    else:
+        client = None
+
+    if request.method == 'POST':
+        form = ClientLogoForm(request.POST, request.FILES, instance=client)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_clients')
+    else:
+        form = ClientLogoForm(instance=client)
+
+    return render(request, 'dashboard/form.html', {'form': form, 'title': 'Client Logo'})
+
+@staff_member_required
+def dashboard_client_delete(request, pk):
+    client = get_object_or_404(ClientLogo, pk=pk)
+    client.delete()
+    return redirect('dashboard_clients')

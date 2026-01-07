@@ -102,12 +102,21 @@ class OfficeInfo(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     map_embed_url = models.TextField(blank=True, help_text="Google Maps Embed Iframe Src")
+    booking_url = models.URLField(blank=True, help_text="Calendly or Meeting URL")
     
     class Meta:
         verbose_name_plural = "Office Information"
 
     def __str__(self):
         return "Office Details"
+
+class TechStack(models.Model):
+    name = models.CharField(max_length=100)
+    logo = models.ImageField(upload_to='tech/')
+    website_url = models.URLField(blank=True)
+    
+    def __str__(self):
+        return self.name
 
 class CompanyProfile(models.Model):
     title = models.CharField(max_length=200, default="About Us")

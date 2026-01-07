@@ -1,5 +1,5 @@
 from django import forms
-from .models import Service, TeamMember, OfficeInfo, Project, BlogPost, CompanyProfile, Testimonial
+from .models import Service, TeamMember, OfficeInfo, Project, BlogPost, CompanyProfile, Testimonial, TechStack, PricingPlan, ClientLogo
 
 class ServiceForm(forms.ModelForm):
     class Meta:
@@ -8,6 +8,24 @@ class ServiceForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
+
+class ClientLogoForm(forms.ModelForm):
+    class Meta:
+        model = ClientLogo
+        fields = '__all__'
+
+class PricingPlanForm(forms.ModelForm):
+    class Meta:
+        model = PricingPlan
+        fields = '__all__'
+        widgets = {
+            'features': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Comma-separated features (e.g. SEO Audit, 5 Pages, Support)'}),
+        }
+
+class TechStackForm(forms.ModelForm):
+    class Meta:
+        model = TechStack
+        fields = '__all__'
 
 class TestimonialForm(forms.ModelForm):
     class Meta:

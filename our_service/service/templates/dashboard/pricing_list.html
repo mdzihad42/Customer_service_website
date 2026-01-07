@@ -1,0 +1,43 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Pricing Plans</h1>
+    <a href="{% url 'dashboard_pricing_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Plan</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Plan Name</th>
+                <th>Price</th>
+                <th>Popular?</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in plans %}
+            <tr>
+                <td style="font-weight: 600;">{{ plan.name }}</td>
+                <td>{{ plan.price }}</td>
+                <td>
+                    {% if plan.is_popular %}
+                    <span class="badge" style="background: var(--success-color);">Yes</span>
+                    {% else %}
+                    <span class="badge">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'dashboard_pricing_edit' plan.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_pricing_delete' plan.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Client Logos (Marquee)</h1>
+    <a href="{% url 'dashboard_client_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Logo</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Client Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr>
+                <td>
+                    <img src="{{ client.logo.url }}" alt="{{ client.name }}"
+                        style="height: 40px; background: white; padding: 5px; border-radius: 4px;">
+                </td>
+                <td>{{ client.name }}</td>
+                <td>
+                    <a href="{% url 'dashboard_client_edit' client.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_client_delete' client.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
