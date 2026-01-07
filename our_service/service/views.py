@@ -18,7 +18,7 @@ def home(request):
     team = TeamMember.objects.all()
     office = OfficeInfo.objects.first()
     recent_projects = Project.objects.order_by('-completed_date')[:3]
-    recent_blogs = BlogPost.objects.order_by('-created_at')[:3]
+    recent_blogs = BlogPost.objects.order_by('-created_at')[:9]
     
     if 'chat_session_id' not in request.session:
         request.session['chat_session_id'] = str(uuid.uuid4())

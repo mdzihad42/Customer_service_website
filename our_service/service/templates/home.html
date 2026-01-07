@@ -910,6 +910,216 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Blog Slider Stylish */
+    .blog-slider-container {
+        position: relative;
+        padding: 2rem 0 4rem 0;
+        /* Added bottom padding for shadows/hover */
+        overflow: hidden;
+        /* Critical fix for clean edges */
+        perspective: 1000px;
+    }
+
+    .blog-slider-wrapper {
+        display: flex;
+        gap: 2rem;
+        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        padding: 1rem 0;
+        /* Space for hover effects */
+    }
+
+    .blog-slide {
+        min-width: 100%;
+        width: 100%;
+        flex-shrink: 0;
+        /* Critical: prevents squishing */
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-style: preserve-3d;
+    }
+
+    /* Tablet & Desktop sizes */
+    @media (min-width: 768px) {
+        .blog-slide {
+            width: calc(50% - 1rem);
+            min-width: calc(50% - 1rem);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .blog-slide {
+            width: calc((100% - 4rem) / 3);
+            min-width: calc((100% - 4rem) / 3);
+        }
+    }
+
+    /* Modern Card Stying */
+    /* Premium Professional Card */
+    .blog-card-modern {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        backdrop-filter: blur(24px);
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .blog-card-modern:hover {
+        transform: translateY(-8px);
+        background: rgba(30, 41, 59, 0.7);
+        border-color: rgba(99, 102, 241, 0.3);
+        /* Indigo tint */
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .blog-img-wrapper {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .blog-img-modern {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .blog-card-modern:hover .blog-img-modern {
+        transform: scale(1.08);
+        /* Subtle zoom */
+    }
+
+    /* Refined Date Badge */
+    .date-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 6px 14px;
+        border-radius: 30px;
+        color: #e2e8f0;
+        font-weight: 500;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+    }
+
+    .blog-content-modern {
+        padding: 1.75rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .blog-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+        color: #f1f5f9;
+        transition: color 0.3s;
+    }
+
+    .blog-card-modern:hover .blog-title {
+        color: var(--primary-color);
+        background: linear-gradient(90deg, #60a5fa, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .blog-desc {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        flex-grow: 1;
+    }
+
+    /* Button-style Link */
+    .blog-read-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0.8rem 1.25rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: #cbd5e1;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .blog-card-modern:hover .blog-read-btn {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
+    }
+
+    .blog-read-btn i {
+        transition: transform 0.3s;
+    }
+
+    .blog-card-modern:hover .blog-read-btn i {
+        transform: translateX(4px);
+    }
+
+    /* Enhanced Nav Buttons */
+    .slider-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 30;
+        backdrop-filter: blur(12px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .slider-nav-btn:hover {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        transform: translateY(-50%) scale(1.15);
+    }
+
+    .slider-prev {
+        left: 0;
+    }
+
+    .slider-next {
+        right: 0;
+    }
+
+    @media (max-width: 768px) {
+        .slider-nav-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(15, 23, 42, 0.95);
+            /* More visible on mobile */
+        }
+    }
 </style>
 {% endblock %}
 
@@ -1144,37 +1354,64 @@
 {% endif %}
 
 <!-- Latest Insights (Blog) -->
-{% if recent_blogs %}
 <section id="blog">
     <div class="section-title">
         <h2>Latest <span class="highlight">Insights</span></h2>
     </div>
-    <div class="services-grid">
-        {% for blog in recent_blogs %}
-        <div class="card glass project-card" style="padding: 0; border: none;"
-            onclick="window.location.href='{% url 'blog_detail' blog.id %}'">
-            {% if blog.image %}
-            <img src="{{ blog.image.url }}" alt="{{ blog.title }}"
-                style="height: 200px; width: 100%; object-fit: cover;">
-            {% else %}
-            <div
-                style="height: 200px; background: #334155; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-newspaper fa-3x" style="color: #64748b;"></i>
+
+    {% if recent_blogs %}
+    <div class="blog-slider-container">
+        <!-- Controls -->
+        <button class="slider-nav-btn slider-prev" id="prevBlogBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-nav-btn slider-next" id="nextBlogBtn"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="blog-slider-wrapper" id="blogTrack">
+            {% for blog in recent_blogs %}
+            <div class="blog-slide">
+                <div class="blog-card-modern" onclick="window.location.href='{% url 'blog_detail' blog.id %}'"
+                    style="cursor: pointer;">
+
+                    <div class="blog-img-wrapper">
+                        {% if blog.image %}
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-img-modern">
+                        {% else %}
+                        <div class="blog-img-modern"
+                            style="background: #1e293b; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-newspaper fa-3x" style="color: #475569;"></i>
+                        </div>
+                        {% endif %}
+                        <div class="date-badge">
+                            <i class="far fa-calendar-alt"></i> {{ blog.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+
+                    <div class="blog-content-modern">
+                        <h3 class="blog-title">{{ blog.title }}</h3>
+                        <p class="blog-desc">{{ blog.content|truncatewords:15 }}</p>
+
+                        <div class="blog-read-btn">
+                            <span>Read Article</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            {% endif %}
-            <div style="padding: 1.5rem;">
-                <span style="color: var(--primary-color); font-size: 0.8rem;">{{ blog.created_at|date:"M d, Y" }}</span>
-                <h3 style="margin: 0.5rem 0; font-size: 1.25rem;">{{ blog.title }}</h3>
-                <p style="color: #94a3b8; font-size: 0.9rem;">{{ blog.content|truncatewords:15 }}</p>
-                <span
-                    style="color: var(--accent-color); font-size: 0.9rem; font-weight: 600; display: block; margin-top: 1rem;">Read
-                    Article <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i></span>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+    {% else %}
+    <div
+        style="text-align: center; padding: 4rem; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px dashed rgba(255,255,255,0.1);">
+        <div
+            style="width: 80px; height: 80px; background: rgba(30,41,59,0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+            <i class="fas fa-edit fa-2x" style="color: #64748b;"></i>
+        </div>
+        <h3 style="color: white; margin-bottom: 0.5rem;">No Insights Yet</h3>
+        <p style="color: #94a3b8; font-size: 1.1rem;">Check back soon for our latest updates and articles.</p>
+    </div>
+    {% endif %}
 </section>
-{% endif %}
 
 <!-- Team Section -->
 <section id="team" style="position: relative; overflow: hidden;">
@@ -1255,7 +1492,8 @@
 
     <div class="section-title">
         <h2>Get In <span class="highlight">Touch</span></h2>
-        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Have a project in mind? Let's discuss how we can
+        <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">Have a project in mind? Let's discuss how we
+            can
             help your business grow.</p>
     </div>
 
@@ -1275,7 +1513,7 @@
                     </div>
                     <div>
                         <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Our Office</h4>
-                        <p style="color: #cbd5e1; line-height: 1.6;">{{ office.address|default:"123 Innovation Dr, Tech City" }}</p>
+                        <p style="color: #cbd5e1; line-height: 1.6;">{{ office.address|default:"123 Innovation Dr,Tech City" }}</p>
                     </div>
                 </div>
 
@@ -1312,7 +1550,8 @@
                 <i class="fas fa-calendar-alt fa-3x"
                     style="color: var(--primary-color); margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));"></i>
                 <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Schedule a Meeting</h3>
-                <p style="color: #cbd5e1; margin-bottom: 2rem;">Skip the email tag. Book a free 30-minute consultation
+                <p style="color: #cbd5e1; margin-bottom: 2rem;">Skip the email tag. Book a free 30-minute
+                    consultation
                     directly on our calendar.</p>
 
                 {% if office.booking_url %}
@@ -1384,7 +1623,8 @@
 <footer>
     <div style="text-align: center;">
         <h2 class="logo" style="margin-bottom: 1rem; display: inline-block;">DevSquad</h2>
-        <p style="color: #94a3b8; max-width: 500px; margin: 0 auto 2rem;">Transforming ideas into digital reality with
+        <p style="color: #94a3b8; max-width: 500px; margin: 0 auto 2rem;">Transforming ideas into digital reality
+            with
             cutting-edge technology and design.</p>
         <div style="margin-bottom: 2rem;">
             <a href="#" style="color: white; margin: 0 1rem; font-size: 1.5rem;"><i class="fab fa-facebook"></i></a>
@@ -1400,61 +1640,54 @@
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- Client Marquee Logic ---
         const container = document.querySelector('.marquee-container');
         const logos = document.querySelectorAll('.client-logo');
 
-        if (!container || logos.length === 0) return;
+        if (container && logos.length > 0) {
+            function checkMagnification() {
+                // Get center relative to viewport
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + (containerRect.width / 2);
 
-        function checkMagnification() {
-            // Get center relative to viewport
-            const containerRect = container.getBoundingClientRect();
-            const containerCenter = containerRect.left + (containerRect.width / 2);
+                // "Hot Zone": The area where magnification happens.
+                const hotZone = 160;
 
-            // "Hot Zone": The area where magnification happens.
-            // Lens is 200px wide (radius 100). Hot zone should be generous.
-            const hotZone = 160;
+                logos.forEach(logo => {
+                    const rect = logo.getBoundingClientRect();
+                    const logoCenter = rect.left + (rect.width / 2);
 
-            logos.forEach(logo => {
-                const rect = logo.getBoundingClientRect();
-                const logoCenter = rect.left + (rect.width / 2);
+                    // Distance from center
+                    const dist = Math.abs(containerCenter - logoCenter);
 
-                // Distance from center
-                const dist = Math.abs(containerCenter - logoCenter);
+                    if (dist < hotZone) {
+                        // Calculate intensity (0 to 1) 
+                        const rawFactor = 1 - (dist / hotZone);
+                        const factor = Math.pow(rawFactor, 2);
+                        const scale = 0.8 + (4.0 * factor);
 
-                if (dist < hotZone) {
-                    // Calculate intensity (0 to 1) 
-                    const rawFactor = 1 - (dist / hotZone);
+                        logo.style.transform = `scale(${scale})`;
+                        logo.style.opacity = 0.8 + (0.2 * factor);
+                        logo.style.zIndex = 40;
 
-                    // Easing: Use squared function to make the peak steeper and edges smoother
-                    const factor = Math.pow(rawFactor, 2);
+                        const saturate = 1 + (0.5 * factor);
+                        const dropShadowOpacity = 0.4 + (0.4 * factor);
+                        logo.style.filter = `saturate(${saturate}) drop-shadow(0 0 25px rgba(59, 130, 246, ${dropShadowOpacity}))`;
 
-                    // Scale: Base 0.8 -> Max 4.8 (Huge, basically filling properly)
-                    // 60px * 4.8 = 288px (Larger than lens, ensures nice fill)
-                    const scale = 0.8 + (4.0 * factor);
+                    } else {
+                        logo.style.transform = 'scale(0.8)';
+                        logo.style.opacity = '0.7';
+                        logo.style.zIndex = '11';
+                        logo.style.filter = 'none';
+                    }
+                });
 
-                    logo.style.transform = `scale(${scale})`;
-                    logo.style.opacity = 0.8 + (0.2 * factor);
-                    logo.style.zIndex = 40; // High, but UNDER the lens (100)
-
-                    // Keep real color, just add a nice glow and slight saturation boost to pop
-                    const saturate = 1 + (0.5 * factor); // Subtle boost, keeps it real
-                    const dropShadowOpacity = 0.4 + (0.4 * factor);
-                    logo.style.filter = `saturate(${saturate}) drop-shadow(0 0 25px rgba(59, 130, 246, ${dropShadowOpacity}))`;
-
-                } else {
-                    logo.style.transform = 'scale(0.8)';
-                    logo.style.opacity = '0.7';
-                    logo.style.zIndex = '11';
-                    logo.style.filter = 'none'; // REAL COLOR
-                }
-            });
-
-            requestAnimationFrame(checkMagnification);
+                requestAnimationFrame(checkMagnification);
+            }
+            checkMagnification();
         }
 
-        checkMagnification();
-
-        // FAQ Accordion Functionality
+        // --- FAQ Accordion Functionality ---
         const faqDetails = document.querySelectorAll('#faq details');
         faqDetails.forEach(targetDetail => {
             targetDetail.addEventListener('toggle', () => {
@@ -1466,6 +1699,64 @@
                     });
                 }
             });
+        });
+
+        // --- Blog Slider Logic ---
+        let currentBlogSlide = 0;
+        const track = document.getElementById('blogTrack');
+        const prevBtn = document.getElementById('prevBlogBtn');
+        const nextBtn = document.getElementById('nextBlogBtn');
+
+        function updateSliderPosition() {
+            if (!track) return;
+
+            const slides = track.querySelectorAll('.blog-slide');
+            if (slides.length === 0) return;
+
+            // Calculate items per view
+            const widthCheck = window.innerWidth;
+            let itemsPerView = 1; /* Mobile */
+            if (widthCheck >= 1024) itemsPerView = 3;
+            else if (widthCheck >= 768) itemsPerView = 2;
+
+            const maxSlideIndex = Math.max(0, slides.length - itemsPerView);
+
+            // Loop functionality
+            // Loop functionality
+            // If currentSlide goes below 0, wrap to last page logic
+            // Loop functionality
+            if (currentBlogSlide < 0) currentBlogSlide = maxSlideIndex;
+            if (currentBlogSlide > maxSlideIndex) currentBlogSlide = 0;
+
+            // Calculate offset (Gap is 2rem)
+            // Use computed style to be precise about the gap
+            const slideStyle = window.getComputedStyle(slides[0]);
+            // margin-right is not set on slides, the gap is on the flex container
+            // but we can assume the gap from the CSS variable or hardcode if we know it
+            const gap = 32; // 2rem
+
+            const slideWidth = slides[0].offsetWidth;
+            const moveAmount = (slideWidth + gap) * currentBlogSlide;
+
+            track.style.transform = `translateX(-${moveAmount}px)`;
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                currentBlogSlide--;
+                updateSliderPosition();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentBlogSlide++;
+                updateSliderPosition();
+            });
+        }
+
+        // Recalculate on resize to fix slide width issues
+        window.addEventListener('resize', () => {
+            currentBlogSlide = 0;
+            updateSliderPosition();
         });
     });
 </script>
