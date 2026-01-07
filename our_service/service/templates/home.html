@@ -2,7 +2,7 @@
 
 {% block extra_css %}
 <style>
-    /* Hero Section */
+    /* Hero Section - Professional Modern */
     .hero {
         min-height: 100vh;
         display: flex;
@@ -11,99 +11,190 @@
         align-items: center;
         text-align: center;
         padding: 8rem 2rem 4rem;
-        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
         position: relative;
         overflow: hidden;
+        z-index: 1;
     }
 
+    /* Subtle Animated Background */
     .hero::before {
         content: '';
         position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        background: url('https://www.transparenttextures.com/patterns/cubes.png');
-        opacity: 0.05;
+        background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+        opacity: 0.03;
         pointer-events: none;
     }
 
+    /* Ambient Light Orbs */
+    .hero-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.4;
+        z-index: -1;
+        animation: orbFloat 20s infinite ease-in-out;
+    }
+
+    .orb-1 {
+        top: -10%;
+        right: -5%;
+        width: 500px;
+        height: 500px;
+        background: #3b82f6;
+        /* Blue */
+    }
+
+    .orb-2 {
+        bottom: -10%;
+        left: -5%;
+        width: 600px;
+        height: 600px;
+        background: #6366f1;
+        /* Indigo */
+        animation-delay: -5s;
+    }
+
+    @keyframes orbFloat {
+
+        0%,
+        100% {
+            transform: translate(0, 0);
+        }
+
+        50% {
+            transform: translate(30px, -30px);
+        }
+    }
+
+    /* Hero Typography */
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
     .hero h1 {
+        font-family: 'Inter', sans-serif;
         font-size: 4.5rem;
         font-weight: 800;
         margin-bottom: 1.5rem;
         line-height: 1.2;
-        background: linear-gradient(135deg, #ffffff 0%, #3b82f6 100%);
+        color: white;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: fadeIn 1s ease-out;
     }
 
     .hero p {
-        font-size: 1.5rem;
-        color: #94a3b8;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.25rem;
+        color: #cbd5e1;
         max-width: 700px;
-        margin-bottom: 2.5rem;
-        animation: fadeIn 1.5s ease-out;
+        margin: 0 auto 3rem;
+        line-height: 1.6;
     }
 
+    /* Professional Buttons */
     .btn {
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
+        padding: 1rem 2.8rem;
+        border-radius: 8px;
+        /* Slightly rounded, professional */
         font-weight: 600;
         text-decoration: none;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
         display: inline-block;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+        font-family: 'Inter', sans-serif;
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        background: #3b82f6;
         color: white;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
     }
 
     .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+        background: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
     }
 
     .btn-outline {
-        border: 2px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: white;
         margin-left: 1rem;
-        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(4px);
     }
 
     .btn-outline:hover {
         background: rgba(255, 255, 255, 0.1);
-        border-color: var(--primary-color);
+        border-color: #fff;
+        transform: translateY(-2px);
     }
 
-    /* Stats Section */
+    /* Stats Section - Clean & Glass */
     .stats-container {
         display: flex;
         justify-content: center;
-        gap: 4rem;
+        gap: 2rem;
         margin-top: 4rem;
         flex-wrap: wrap;
     }
 
     .stat-item {
         text-align: center;
+        padding: 2rem 3rem !important;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        min-width: 180px;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.2);
     }
 
     .stat-number {
+        font-family: 'Inter', sans-serif;
         font-size: 2.5rem;
         font-weight: 700;
         color: white;
         display: block;
+        margin-bottom: 0.5rem;
     }
 
     .stat-label {
         color: #94a3b8;
+        font-family: 'Inter', sans-serif;
         font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 1px;
+        font-weight: 500;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* General Section Styles */
@@ -123,6 +214,7 @@
         margin-bottom: 1rem;
         background: linear-gradient(to right, #fff, #94a3b8);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
@@ -172,6 +264,7 @@
         margin-bottom: 1.5rem;
         background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
@@ -210,22 +303,33 @@
 
     /* Client Marquee */
     .marquee-container {
-        overflow: visible;
-        /* Ensure nothing gets clipped if it pops out */
+        overflow: hidden;
         white-space: nowrap;
-        padding: 8rem 0;
-        /* Massive padding to allow logos to grow huge */
+        padding: 6rem 0;
         background: rgba(15, 23, 42, 0.3);
         margin: 4rem 0;
         position: relative;
         border-top: 1px solid var(--glass-border);
         border-bottom: 1px solid var(--glass-border);
-        /* Masking edges but ensuring center is fully visible */
-        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        /* Masking edges */
+        mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Animated background grid for extra style */
+    .marquee-container::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px;
+        opacity: 0.5;
+        z-index: 0;
     }
 
     /* The Center Glass Lens */
@@ -234,43 +338,67 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 200px;
-        /* Bigger lens */
-        height: 200px;
-        /* Much more subtle glossy reflection */
-        background:
-            linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0) 51%, rgba(255, 255, 255, 0.05) 100%);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        /* Subtle Rim */
+        width: 220px;
+        height: 220px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01));
+        border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         box-shadow:
-            0 5px 30px rgba(0, 0, 0, 0.2),
-            /* Softer Drop Shadow */
+            0 0 50px rgba(59, 130, 246, 0.15),
             inset 0 0 20px rgba(255, 255, 255, 0.1);
         z-index: 100;
-        /* FORCE TOP */
         pointer-events: none;
-        backdrop-filter: blur(0px);
-        /* Crystal clear */
+        backdrop-filter: brightness(1.2) contrast(1.1);
+        /* Highlight content behind lens */
+        animation: lensPulse 4s ease-in-out infinite;
     }
 
-    /* A glow effect behind the lens for 'magic' feel */
-    .marquee-lens::after {
+    /* Lens Shine Effect */
+    .marquee-lens::before {
         content: '';
         position: absolute;
-        inset: -10px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 70%);
-        z-index: -1;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transform: rotate(45deg) translateY(-100%);
+        animation: lensShine 6s infinite;
+    }
+
+    @keyframes lensPulse {
+
+        0%,
+        100% {
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        50% {
+            box-shadow: 0 0 80px rgba(59, 130, 246, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    @keyframes lensShine {
+        0% {
+            transform: rotate(45deg) translateY(-100%);
+        }
+
+        20% {
+            transform: rotate(45deg) translateY(100%);
+        }
+
+        100% {
+            transform: rotate(45deg) translateY(100%);
+        }
     }
 
     .marquee-content {
         display: inline-flex;
         align-items: center;
         animation: marquee 40s linear infinite;
-        /* Slower for effect */
         z-index: 10;
-        /* Base layer - well below lens */
         will-change: transform;
     }
 
@@ -279,21 +407,41 @@
     }
 
     .client-logo {
-        height: 60px;
-        /* Base size */
-        margin: 0 4rem;
-        opacity: 0.8;
-        /* HIGH VISIBILITY DEFAULT, REAL COLOR */
-        transition: opacity 0.1s linear;
+        height: 80px;
+        /* Increased size */
+        margin: 0 5rem;
+        opacity: 0.7;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        will-change: transform, opacity, filter;
-        transform-origin: center center;
-        position: relative;
-        z-index: 11;
-        /* Slightly above content base */
-        /* Ensure crisp rendering */
-        image-rendering: -webkit-optimize-contrast;
-        /* NO GRAYSCALE - REAL COLOR ALWAYS */
+        filter: grayscale(0.2) drop-shadow(0 0 0 transparent);
+        /* Float animation */
+        animation: floatLogo 6s ease-in-out infinite;
+    }
+
+    /* Stagger animations for weird organic feel */
+    .client-logo:nth-child(odd) {
+        animation-duration: 5s;
+        animation-delay: 0.5s;
+    }
+
+    .client-logo:nth-child(even) {
+        animation-duration: 7s;
+        animation-delay: 1s;
+    }
+
+    .client-logo:hover {
+        opacity: 1;
+        transform: scale(1.2) translateY(-5px);
+        /* Pop effect */
+        filter: grayscale(0) drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+        z-index: 101;
+        /* Bring above lens if needed */
+    }
+
+    /* Ensure only one scales at a time nicely */
+    .marquee-container:hover .client-logo:not(:hover) {
+        opacity: 0.4;
+        filter: blur(2px);
     }
 
     @keyframes marquee {
@@ -303,6 +451,18 @@
 
         100% {
             transform: translateX(-50%);
+        }
+    }
+
+    @keyframes floatLogo {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-15px);
         }
     }
 
@@ -381,70 +541,228 @@
     }
 
     /* FAQ */
+    /* FAQ Stylish */
     .faq-container {
         max-width: 800px;
         margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
     }
 
     details {
         background: rgba(30, 41, 59, 0.4);
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        overflow: hidden;
         border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        position: relative;
+    }
+
+    details:hover {
+        background: rgba(30, 41, 59, 0.6);
+        border-color: rgba(59, 130, 246, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+    }
+
+    details[open] {
+        background: rgba(30, 41, 59, 0.8);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 1px var(--primary-color), 0 10px 40px -10px rgba(59, 130, 246, 0.2);
     }
 
     summary {
-        padding: 1.5rem;
-        cursor: pointer;
-        font-weight: 600;
         list-style: none;
-        position: relative;
-        padding-right: 3rem;
+        padding: 1.5rem 2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #e2e8f0;
+        transition: color 0.3s ease;
     }
 
-    summary::after {
-        content: '+';
-        position: absolute;
-        right: 1.5rem;
-        font-size: 1.5rem;
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary:hover {
         color: var(--primary-color);
     }
 
+    summary::after {
+        content: '\f067';
+        /* FontAwesome Plus */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 50%;
+    }
+
     details[open] summary::after {
-        content: '-';
+        transform: rotate(135deg);
+        background: var(--primary-color);
+        color: white;
     }
 
     .faq-answer {
-        padding: 1.5rem;
-        padding-top: 0;
+        padding: 0 2rem 2rem 2rem;
         color: #94a3b8;
-        border-top: 1px solid var(--glass-border);
-        margin-top: 5px;
+        line-height: 1.7;
+        font-size: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 0;
+        padding-top: 1.5rem;
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    details[open] .faq-answer {
+        animation: faqSlideDown 0.4s ease-out forwards;
+    }
+
+    @keyframes faqSlideDown {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* CTA Banner Stylish */
+    .cta-banner {
+        position: relative;
+        padding: 5rem 3rem;
+        border-radius: 30px;
+        margin: 4rem auto;
+        max-width: 1100px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: radial-gradient(circle at bottom left, #1e293b 0%, #0f172a 100%);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .cta-bg-overlay {
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 30px 30px;
+        opacity: 0.4;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .cta-content h2 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        color: white;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    .highlight-text {
+        background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .cta-content p {
+        color: #94a3b8;
+        font-size: 1.25rem;
+        margin-bottom: 2.5rem;
         line-height: 1.6;
     }
 
-    /* CTA Banner */
-    .cta-banner {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        padding: 4rem 2rem;
-        text-align: center;
-        border-radius: 24px;
-        margin: 4rem auto;
-        max-width: 1000px;
-        position: relative;
-        overflow: hidden;
+    .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        color: white;
+        padding: 1.2rem 2.5rem;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .cta-banner::before {
-        content: '';
+    .btn-cta:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 20px 40px -5px rgba(59, 130, 246, 0.5);
+        filter: brightness(1.1);
+    }
+
+    .btn-cta i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-cta:hover i {
+        transform: translateX(5px);
+    }
+
+    /* Decorations */
+    .cta-decoration {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-        opacity: 0.1;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.4;
+        z-index: 0;
+    }
+
+    .dec-1 {
+        top: -50px;
+        right: -50px;
+        width: 300px;
+        height: 300px;
+        background: #3b82f6;
+        animation: pulseDec 8s infinite alternate;
+    }
+
+    .dec-2 {
+        bottom: -50px;
+        left: -50px;
+        width: 400px;
+        height: 400px;
+        background: #6366f1;
+        animation: pulseDec 10s infinite alternate-reverse;
+    }
+
+    @keyframes pulseDec {
+        0% {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+
+        100% {
+            transform: scale(1.2);
+            opacity: 0.5;
+        }
     }
 
     /* Footer */
@@ -597,29 +915,35 @@
 
 {% block content %}
 <!-- Hero Section -->
+<!-- Hero Section -->
 <section class="hero">
-    <h1>Transform Your Digital<br>Presence Today</h1>
-    <p>We craft stunning websites, powerful applications, and result-driven marketing strategies to help your business
-        grow.</p>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
 
-    <div style="margin-bottom: 3rem;">
-        <a href="#contact" class="btn btn-primary">Start Your Project</a>
-        <a href="#projects" class="btn btn-outline">View Project</a>
-    </div>
+    <div class="hero-content">
+        <h1>Transform Your Digital<br>Presence Today</h1>
+        <p>We craft stunning websites, powerful applications, and result-driven marketing strategies to help your
+            business grow.</p>
 
-    <!-- Stats -->
-    <div class="stats-container">
-        <div class="stat-item glass" style="padding: 1.5rem 2.5rem;">
-            <span class="stat-number">100+</span>
-            <span class="stat-label">Projects Done</span>
+        <div style="margin-bottom: 3rem;">
+            <a href="#contact" class="btn btn-primary">Start Your Project</a>
+            <a href="#projects" class="btn btn-outline">View Our Work</a>
         </div>
-        <div class="stat-item glass" style="padding: 1.5rem 2.5rem;">
-            <span class="stat-number">50+</span>
-            <span class="stat-label">Happy Clients</span>
-        </div>
-        <div class="stat-item glass" style="padding: 1.5rem 2.5rem;">
-            <span class="stat-number">5+</span>
-            <span class="stat-label">Years Exp.</span>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-number">100+</span>
+                <span class="stat-label">Projects Completed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Happy Clients</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5+</span>
+                <span class="stat-label">Years Experience</span>
+            </div>
         </div>
     </div>
 </section>
@@ -701,8 +1025,7 @@
             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
             <div class="project-info">
                 <h3>{{ project.title }}</h3>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{
-                    project.description|truncatewords:20 }}</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{ project.description|truncatewords:20 }}</p>
                 {% if project.live_url %}
                 <a href="{{ project.live_url }}" target="_blank"
                     style="color: var(--accent-color); font-weight: 600;">View Live <i
@@ -766,8 +1089,7 @@
                 {% endif %}
                 <div>
                     <h4 style="font-size: 1rem; margin: 0;">{{ testimonial.client_name }}</h4>
-                    <span style="font-size: 0.8rem; color: #94a3b8;">{{ testimonial.client_role }}, {{
-                        testimonial.company }}</span>
+                    <span style="font-size: 0.8rem; color: #94a3b8;">{{ testimonial.client_role }}, {{ testimonial.company }}</span>
                 </div>
             </div>
         </div>
@@ -907,12 +1229,20 @@
 <!-- CTA Banner -->
 <section style="padding: 0 2rem;">
     <div class="cta-banner">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem; position: relative;">Ready to start your project?</h2>
-        <p style="color: rgba(255,255,255,0.9); margin-bottom: 2rem; position: relative; font-size: 1.2rem;">Let's
-            discuss how we can help your business grow.</p>
-        <a href="#contact" class="btn"
-            style="background: white; color: var(--primary-color); position: relative; font-weight: 700;">Get Free
-            Consultation</a>
+        <div class="cta-bg-overlay"></div>
+        <div class="cta-content">
+            <h2>Ready to start your <span class="highlight-text">Project?</span></h2>
+            <p>Let's turn your vision into reality. We help businesses grow with cutting-edge digital solutions.</p>
+            <div class="cta-actions">
+                <a href="#contact" class="btn btn-cta">
+                    <span>Get Free Consultation</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        <!-- Decorative Elements -->
+        <div class="cta-decoration dec-1"></div>
+        <div class="cta-decoration dec-2"></div>
     </div>
 </section>
 
@@ -945,8 +1275,7 @@
                     </div>
                     <div>
                         <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">Our Office</h4>
-                        <p style="color: #cbd5e1; line-height: 1.6;">{{ office.address|default:"123 Innovation Dr, Tech
-                            City" }}</p>
+                        <p style="color: #cbd5e1; line-height: 1.6;">{{ office.address|default:"123 Innovation Dr, Tech City" }}</p>
                     </div>
                 </div>
 
@@ -1124,6 +1453,20 @@
         }
 
         checkMagnification();
+
+        // FAQ Accordion Functionality
+        const faqDetails = document.querySelectorAll('#faq details');
+        faqDetails.forEach(targetDetail => {
+            targetDetail.addEventListener('toggle', () => {
+                if (targetDetail.open) {
+                    faqDetails.forEach(detail => {
+                        if (detail !== targetDetail && detail.open) {
+                            detail.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 {% endblock %}

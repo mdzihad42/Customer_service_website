@@ -128,8 +128,7 @@
             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
             <div class="project-info">
                 <h3 style="margin-bottom: 0.5rem;">{{ project.title }}</h3>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{
-                    project.description|truncatewords:20 }}</p>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{ project.description|truncatewords:20 }}</p>
                 {% if project.live_url %}
                 <a href="{{ project.live_url }}" target="_blank" class="view-btn">View Case Study <i
                         class="fas fa-arrow-right"></i></a>

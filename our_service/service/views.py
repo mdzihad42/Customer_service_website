@@ -9,7 +9,7 @@ from django.contrib import messages
 import dns.resolver
 
 from .models import Service, TeamMember, OfficeInfo, ContactMessage, ChatMessage, Project, BlogPost, CompanyProfile, Testimonial, FAQ, PricingPlan, ClientLogo, TechStack
-from .forms import ServiceForm, TeamMemberForm, OfficeInfoForm, ProjectForm, BlogPostForm, CompanyProfileForm, TestimonialForm, TechStackForm, PricingPlanForm, ClientLogoForm
+from .forms import ServiceForm, TeamMemberForm, OfficeInfoForm, ProjectForm, BlogPostForm, CompanyProfileForm, TestimonialForm, TechStackForm, PricingPlanForm, ClientLogoForm, FAQForm
 from django.db.models import Count, Max
 import uuid
 
@@ -471,3 +471,32 @@ def dashboard_client_delete(request, pk):
     client = get_object_or_404(ClientLogo, pk=pk)
     client.delete()
     return redirect('dashboard_clients')
+
+@staff_member_required
+def dashboard_faqs(request):
+    faqs = FAQ.objects.all().order_by('order')
+    return render(request, 'dashboard/faq_list.html', {'faqs': faqs})
+
+@staff_member_required
+def dashboard_faq_edit(request, pk=None):
+    if pk:
+        faq_item = get_object_or_404(FAQ, pk=pk)
+    else:
+        faq_item = None
+
+    if request.method == 'POST':
+        form = FAQForm(request.POST, request.FILES, instance=faq_item)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_faqs')
+    else:
+        form = FAQForm(instance=faq_item)
+
+    return render(request, 'dashboard/form.html', {'form': form, 'title': 'FAQ'})
+
+@staff_member_required
+def dashboard_faq_delete(request, pk):
+    faq_item = get_object_or_404(FAQ, pk=pk)
+    faq_item.delete()
+    return redirect('dashboard_faqs')
+

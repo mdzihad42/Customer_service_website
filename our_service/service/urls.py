@@ -65,4 +65,9 @@ urlpatterns = [
     path('custom-admin/clients/new/', views.dashboard_client_edit, name='dashboard_client_create'),
     path('custom-admin/clients/edit/<int:pk>/', views.dashboard_client_edit, name='dashboard_client_edit'),
     path('custom-admin/clients/delete/<int:pk>/', views.dashboard_client_delete, name='dashboard_client_delete'),
+    
+    path('custom-admin/faqs/', views.dashboard_faqs, name='dashboard_faqs'),
+    path('custom-admin/faqs/new/', views.dashboard_faq_edit, name='dashboard_faq_create'),
+    path('custom-admin/faqs/edit/<int:pk>/', views.dashboard_faq_edit, name='dashboard_faq_edit'),
+    path('custom-admin/faqs/delete/<int:pk>/', views.dashboard_faq_delete, name='dashboard_faq_delete'),
 ]

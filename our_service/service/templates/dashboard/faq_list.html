@@ -1,0 +1,35 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="header">
+    <h1>Frequently Asked Questions</h1>
+    <a href="{% url 'dashboard_faq_create' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add FAQ</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Order</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for faq in faqs %}
+            <tr>
+                <td>{{ faq.question }}</td>
+                <td>{{ faq.order }}</td>
+                <td>
+                    <a href="{% url 'dashboard_faq_edit' faq.id %}" class="btn btn-primary"
+                        style="padding: 0.3rem 0.6rem;"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'dashboard_faq_delete' faq.id %}" class="btn btn-danger"
+                        style="padding: 0.3rem 0.6rem;" onclick="return confirm('Are you sure?')"><i
+                            class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

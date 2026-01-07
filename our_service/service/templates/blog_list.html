@@ -84,8 +84,7 @@
                 <span><i class="fas fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
             </div>
             <h3 style="margin-bottom: 0.8rem;">{{ post.title }}</h3>
-            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{
-                post.content|striptags|truncatewords:20 }}</p>
+            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{ post.content|striptags|truncatewords:20 }}</p>
             <div class="read-more">Read Article <i class="fas fa-arrow-right"></i></div>
         </div>
     </div>

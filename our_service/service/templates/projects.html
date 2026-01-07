@@ -2,66 +2,223 @@
 
 {% block extra_css %}
 <style>
+    /* Header Section Premium */
     .header-section {
-        padding: 8rem 2rem 4rem;
+        padding: 10rem 2rem 6rem;
         text-align: center;
-        background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+        background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+        position: relative;
+        overflow: hidden;
     }
 
+    .header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+        opacity: 0.05;
+        pointer-events: none;
+    }
+
+    /* Floating Orbs */
+    .orb {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.3;
+        animation: floatOrb 10s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+        top: -10%;
+        left: -5%;
+        background: var(--primary-color);
+    }
+
+    .orb-2 {
+        bottom: -10%;
+        right: -5%;
+        background: var(--accent-color);
+        animation-delay: -5s;
+    }
+
+    @keyframes floatOrb {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-40px);
+        }
+    }
+
+    .gradient-text {
+        font-size: 4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+    }
+
+    /* Projects Grid */
     .projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2.5rem;
-        padding: 2rem;
-        max-width: 1200px;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 3rem;
+        padding: 4rem 2rem;
+        max-width: 1300px;
         margin: 0 auto;
     }
 
+    /* Project Card Premium */
     .project-card {
-        border-radius: 16px;
+        border-radius: 24px;
         overflow: hidden;
-        transition: transform 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(12px);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .project-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+        border-color: rgba(59, 130, 246, 0.4);
+        background: rgba(30, 41, 59, 0.6);
+    }
+
+    .img-wrapper {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        overflow: hidden;
     }
 
     .project-img {
         width: 100%;
-        height: 250px;
+        height: 100%;
         object-fit: cover;
+        transition: transform 0.7s ease;
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.15);
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+        opacity: 0.6;
+        transition: opacity 0.3s;
+    }
+
+    .project-card:hover .overlay {
+        opacity: 0.3;
     }
 
     .project-info {
-        padding: 1.5rem;
+        padding: 2rem;
         flex: 1;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 2;
     }
 
     .project-meta {
-        font-size: 0.85rem;
-        color: var(--accent-color);
-        margin-bottom: 0.5rem;
         display: flex;
-        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+    }
+
+    .meta-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 50px;
+        background: rgba(59, 130, 246, 0.1);
+        color: #60a5fa;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .project-card:hover .meta-tag {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: #3b82f6;
+    }
+
+    .project-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+        color: white;
+        font-weight: 700;
+        transition: color 0.3s;
+    }
+
+    .project-card:hover .project-title {
+        color: var(--primary-color);
+    }
+
+    .project-desc {
+        color: #cbd5e1;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        flex-grow: 1;
     }
 
     .view-btn {
-        margin-top: auto;
-        display: inline-block;
-        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
         text-decoration: none;
         font-weight: 600;
-        transition: padding-left 0.2s;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        margin-top: auto;
     }
 
     .view-btn:hover {
-        padding-left: 5px;
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+    .view-btn i {
+        transition: transform 0.3s;
+    }
+
+    .view-btn:hover i {
+        transform: translateX(4px);
     }
 
     @media (max-width: 768px) {
@@ -69,8 +226,8 @@
             padding: 6rem 1rem 3rem;
         }
 
-        .header-section h1 {
-            font-size: 2.5rem !important;
+        .gradient-text {
+            font-size: 2.5rem;
         }
 
         .projects-grid {
@@ -82,23 +239,45 @@
 </style>
 {% endblock %}
 
+
 {% block content %}
 <div class="header-section">
-    <h1 class="gradient-text" style="font-size: 3rem;">Our Projects</h1>
-    <p style="color: #94a3b8; margin-top: 1rem;">Showcasing our best work and success stories</p>
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <h1 class="gradient-text">Our Projects</h1>
+    <p class="subtitle">Discover how we've helped businesses transform their digital presence with cutting-edge
+        technology and design.</p>
 </div>
 
 <div class="projects-grid">
     {% for project in projects %}
-    <div class="project-card glass">
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
+    <div class="project-card">
+        <div class="img-wrapper">
+            <div class="overlay"></div>
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
+        </div>
         <div class="project-info">
             <div class="project-meta">
-                <span><i class="fas fa-calendar"></i> {{ project.completed_date|date:"M Y" }}</span>
-                <span><i class="fas fa-building"></i> {{ project.client }}</span>
+                <span class="meta-tag"><i class="fas fa-calendar-alt"></i> {{ project.completed_date|date:"M Y" }}</span>
+                <span class="meta-tag"><i class="fas fa-building"></i> {{ project.client }}</span>
             </div>
-            <h3 style="margin-bottom: 0.5rem;">{{ project.title }}</h3>
-            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{ project.description }}</p>
+            <h3 class="project-title">{{ project.title }}</h3>
+            <div class="description-wrapper" style="margin-bottom: 1.5rem; flex-grow: 1;">
+                <p class="short-desc" style="color: #f1f5f9; margin-bottom: 0.5rem; line-height: 1.6;">
+                    {{ project.description|truncatewords:20 }}
+                </p>
+                <p class="full-desc" style="color: #f1f5f9; display: none; margin-bottom: 0.5rem; line-height: 1.6;">
+                    {{ project.description }}
+                </p>
+                {% if project.description|wordcount > 20 %}
+                <button onclick="toggleDescription(this)" class="see-more-btn"
+                    style="background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 0.9rem; font-weight: 600; padding: 0; display: inline-flex; align-items: center; gap: 4px;">
+                    See more <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
+                </button>
+                {% endif %}
+            </div>
             {% if project.live_url %}
             <a href="{{ project.live_url }}" target="_blank" class="view-btn">View Live Project <i
                     class="fas fa-arrow-right"></i></a>
@@ -106,9 +285,35 @@
         </div>
     </div>
     {% empty %}
-    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
+    <div style="text-align: center; grid-column: 1/-1; padding: 3rem; color: #94a3b8;">
+        <i class="fas fa-folder-open fa-3x" style="margin-bottom: 1rem; opacity: 0.5;"></i>
         <h3>No projects added yet.</h3>
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function toggleDescription(btn) {
+        const wrapper = btn.closest('.description-wrapper');
+        const shortDesc = wrapper.querySelector('.short-desc');
+        const fullDesc = wrapper.querySelector('.full-desc');
+        const icon = btn.querySelector('i');
+
+        if (fullDesc.style.display === 'none') {
+            fullDesc.style.display = 'block';
+            shortDesc.style.display = 'none';
+            btn.childNodes[0].nodeValue = 'See less ';
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+        } else {
+            fullDesc.style.display = 'none';
+            shortDesc.style.display = 'block';
+            btn.childNodes[0].nodeValue = 'See more ';
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    }
+</script>
 {% endblock %}
