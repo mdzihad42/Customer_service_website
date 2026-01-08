@@ -12,6 +12,8 @@ from .models import Service, TeamMember, OfficeInfo, ContactMessage, ChatMessage
 from .forms import ServiceForm, TeamMemberForm, OfficeInfoForm, ProjectForm, BlogPostForm, CompanyProfileForm, TestimonialForm, TechStackForm, PricingPlanForm, ClientLogoForm, FAQForm
 from django.db.models import Count, Max
 import uuid
+from django.conf import settings
+from django.templatetags.static import static
 
 def home(request):
     services = Service.objects.all()
@@ -499,4 +501,82 @@ def dashboard_faq_delete(request, pk):
     faq_item = get_object_or_404(FAQ, pk=pk)
     faq_item.delete()
     return redirect('dashboard_faqs')
+
+# --- PWA Views ---
+
+def manifest_view(request):
+    manifest = {
+        "name": "DevSquad - Digital Solutions",
+        "short_name": "DevSquad",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#0f172a",
+        "theme_color": "#3b82f6",
+        "scope": "/",
+        "icons": [
+            {
+                "src": "https://cdn-icons-png.flaticon.com/512/9358/9358763.png", 
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "https://cdn-icons-png.flaticon.com/512/9358/9358763.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    }
+    return JsonResponse(manifest)
+
+def service_worker_view(request):
+    js_content = """
+    const CACHE_NAME = 'devsquad-v1';
+    const urlsToCache = [
+        '/',
+        '/static/css/style.css', 
+        // Add other static assets here if known
+    ];
+
+    self.addEventListener('install', event => {
+        event.waitUntil(
+            caches.open(CACHE_NAME)
+                .then(cache => {
+                    return cache.addAll(urlsToCache).catch(err => {
+                        console.log('Cache addAll error: ', err);
+                    });
+                })
+        );
+    });
+
+    self.addEventListener('fetch', event => {
+        event.respondWith(
+            caches.match(event.request)
+                .then(response => {
+                    if (response) {
+                        return response;
+                    }
+                    return fetch(event.request);
+                })
+        );
+    });
+    
+    self.addEventListener('activate', event => {
+        const cacheWhitelist = [CACHE_NAME];
+        event.waitUntil(
+            caches.keys().then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheWhitelist.indexOf(cacheName) === -1) {
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
+        );
+    });
+    """
+    response = HttpResponse(js_content, content_type='application/javascript')
+    return response
+
+from django.http import HttpResponse
 

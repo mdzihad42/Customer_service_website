@@ -14,6 +14,10 @@ urlpatterns = [
     path('chat/send/', views.chat_send_message, name='chat_send'),
     path('chat/read/', views.chat_mark_read, name='chat_mark_read'),
     path('chat/notifications/', views.chat_unread_count, name='chat_notifications'),
+    
+    # PWA
+    path('manifest.json', views.manifest_view, name='manifest'),
+    path('service-worker.js', views.service_worker_view, name='service_worker'),
 
     # Dashboard URLs
     path('custom-admin/', views.dashboard_home, name='dashboard_home'),

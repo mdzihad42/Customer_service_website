@@ -83,7 +83,9 @@ class PricingPlan(models.Model):
     
     def get_features_list(self):
         if self.features:
-            return [x.strip() for x in self.features.split(',')]
+            # Handle both commas and newlines as separators
+            text = self.features.replace('\r\n', ',').replace('\n', ',')
+            return [x.strip() for x in text.split(',') if x.strip()]
         return []
 
     def __str__(self):

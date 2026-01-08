@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Solutions | Premium Services</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="{% url 'manifest' %}">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9358/9358763.png">
     <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
@@ -35,6 +40,13 @@
             color: var(--text-color);
             overflow-x: hidden;
             line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            /* Removes bottom spacing */
         }
 
         /* Scrollbar */
@@ -85,6 +97,7 @@
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
         }
@@ -244,7 +257,16 @@
         /* Responsive */
         @media (max-width: 768px) {
             nav {
-                width: 95%;
+                top: 15px;
+                /* Slightly higher on mobile */
+                left: 1rem;
+                /* Fixed margin left */
+                right: 1rem;
+                /* Fixed margin right */
+                width: auto;
+                /* Auto width based on left/right */
+                transform: none;
+                /* Remove centering transform */
                 padding: 1rem;
             }
 
@@ -444,6 +466,19 @@
         });
     </script>
     {% block extra_js %}{% endblock %}
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register("{% url 'service_worker' %}")
+                    .then(function (registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function (err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>
