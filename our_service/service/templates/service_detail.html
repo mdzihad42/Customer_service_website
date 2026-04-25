@@ -3,60 +3,102 @@
 {% block extra_css %}
 <style>
     .service-header {
-        padding: 8rem 2rem 4rem;
+        padding: 10rem 2rem 6rem;
         text-align: center;
-        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        background: var(--bg-alt);
+        position: relative;
+    }
+
+    .service-header h1 {
+        font-size: 3.5rem;
+        color: var(--text-color);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin-bottom: 1rem;
+    }
+
+    .service-header p {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
     }
 
     .service-details {
-        max-width: 1000px;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 6rem 2rem;
+    }
+
+    .detail-card {
+        background: white;
+        padding: 4rem;
+        border-radius: 30px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow);
+        margin-bottom: 6rem;
     }
 
     .technologies-list {
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
-        margin-top: 1rem;
+        margin-top: 2rem;
     }
 
     .tech-tag {
-        background: rgba(59, 130, 246, 0.2);
+        background: var(--bg-alt);
         color: var(--primary-color);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
+        padding: 0.6rem 1.2rem;
+        border-radius: 12px;
         font-size: 0.9rem;
-        border: 1px solid rgba(59, 130, 246, 0.4);
+        font-weight: 700;
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .tech-tag:hover {
+        background: var(--primary-color);
+        color: white;
     }
 
     .projects-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 2.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 3rem;
     }
 
     .project-card {
-        border-radius: 16px;
+        background: white;
+        border-radius: 24px;
         overflow: hidden;
-        transition: transform 0.3s;
+        border: 1px solid var(--glass-border);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
+        box-shadow: var(--shadow);
     }
 
     .project-card:hover {
         transform: translateY(-10px);
+        border-color: var(--secondary-color);
+        box-shadow: 0 30px 60px rgba(130, 157, 149, 0.15);
     }
 
     .project-img {
         width: 100%;
-        height: 200px;
+        height: 220px;
         object-fit: cover;
+        transition: transform 0.8s ease;
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.1);
     }
 
     .project-info {
-        padding: 1.5rem;
+        padding: 2rem;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -64,27 +106,33 @@
 
     .view-btn {
         margin-top: auto;
-        display: inline-block;
         color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        transition: gap 0.3s ease;
+    }
+
+    .project-card:hover .view-btn {
+        gap: 1rem;
+        color: var(--text-color);
     }
 
     @media (max-width: 768px) {
         .service-header {
-            padding: 6rem 1rem 3rem;
+            padding: 8rem 1rem 4rem;
         }
 
         .service-header h1 {
-            font-size: 2.5rem !important;
+            font-size: 2.5rem;
         }
 
-        .service-details {
-            padding: 1rem;
-        }
-
-        .glass {
-            padding: 1.5rem !important;
+        .detail-card {
+            padding: 2rem;
         }
 
         .projects-grid {
@@ -97,38 +145,42 @@
 {% block content %}
 <!-- Service Header -->
 <div class="service-header">
-    <i class="fa {{ service.icon }}" style="font-size: 4rem; color: var(--accent-color); margin-bottom: 2rem;"></i>
-    <h1 class="gradient-text" style="font-size: 3.5rem;">{{ service.title }}</h1>
-    <p style="color: #94a3b8; font-size: 1.2rem; margin-top: 1rem;">{{ service.description }}</p>
+    <div style="width: 80px; height: 80px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; box-shadow: var(--shadow);">
+        <i class="fa {{ service.icon }}" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+    </div>
+    <h1>{{ service.title }}</h1>
+    <p>{{ service.description }}</p>
 </div>
 
 <!-- Detailed Content -->
 <section class="service-details">
-    <div class="glass" style="padding: 3rem; margin-bottom: 4rem;">
-        <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">What We Do</h2>
-        <div style="line-height: 1.8; color: #cbd5e1; font-size: 1.1rem; white-space: pre-line;">
+    <div class="detail-card">
+        <h2 style="margin-bottom: 2rem; color: var(--text-color); font-size: 2rem; letter-spacing: -1px;">Expertise & Approach</h2>
+        <div style="line-height: 1.8; color: var(--text-muted); font-size: 1.1rem; white-space: pre-line;">
             {{ service.detailed_description|default:"Detailed description not available yet." }}
         </div>
 
         {% if service.get_technologies_list %}
-        <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Technologies We Use</h3>
-        <div class="technologies-list">
-            {% for tech in service.get_technologies_list %}
-            <span class="tech-tag">{{ tech }}</span>
-            {% endfor %}
+        <div style="margin-top: 4rem;">
+            <h3 style="margin-bottom: 1.5rem; color: var(--text-color); font-size: 1.4rem;">Technologies We Use</h3>
+            <div class="technologies-list">
+                {% for tech in service.get_technologies_list %}
+                <span class="tech-tag">{{ tech }}</span>
+                {% endfor %}
+            </div>
         </div>
         {% endif %}
     </div>
 
     <!-- Related Projects -->
-    <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Recent {{ service.title }} Projects</h2>
+    <h2 style="text-align: center; margin-bottom: 4rem; color: var(--text-color); font-size: 2.5rem; letter-spacing: -1px;">Recent Projects</h2>
     <div class="projects-grid">
         {% for project in projects %}
-        <div class="project-card glass">
+        <div class="project-card">
             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-img">
             <div class="project-info">
-                <h3 style="margin-bottom: 0.5rem;">{{ project.title }}</h3>
-                <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1rem;">{{ project.description|truncatewords:20 }}</p>
+                <h3 style="margin-bottom: 0.8rem; font-size: 1.5rem; color: var(--text-color);">{{ project.title }}</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">{{ project.description|truncatewords:20 }}</p>
                 {% if project.live_url %}
                 <a href="{{ project.live_url }}" target="_blank" class="view-btn">View Case Study <i
                         class="fas fa-arrow-right"></i></a>
@@ -136,7 +188,8 @@
             </div>
         </div>
         {% empty %}
-        <div class="glass" style="grid-column: 1/-1; padding: 2rem; text-align: center;">
+        <div style="grid-column: 1/-1; padding: 4rem 2rem; text-align: center; background: var(--bg-alt); border-radius: 24px; color: var(--text-muted);">
+            <i class="fas fa-folder-open fa-3x" style="margin-bottom: 1rem; opacity: 0.3;"></i>
             <p>No projects listed under this category yet.</p>
         </div>
         {% endfor %}

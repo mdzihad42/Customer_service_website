@@ -3,47 +3,108 @@
 {% block extra_css %}
 <style>
     .post-header {
-        padding: 8rem 2rem 4rem;
+        padding: 10rem 2rem 6rem;
         text-align: center;
-        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        background: var(--bg-alt);
+        position: relative;
+    }
+
+    .post-header h1 {
+        font-size: 3.5rem;
+        color: var(--text-color);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin: 1.5rem auto 0;
+        max-width: 900px;
+        line-height: 1.2;
+    }
+
+    .post-meta {
+        color: var(--primary-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 0.9rem;
     }
 
     .post-container {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 2rem;
+        padding: 6rem 2rem;
     }
 
     .post-image {
         width: 100%;
-        max-height: 500px;
+        max-height: 600px;
         object-fit: cover;
-        border-radius: 16px;
-        margin-bottom: 2rem;
-        border: 1px solid var(--border-color);
+        border-radius: 30px;
+        margin-bottom: 4rem;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--glass-border);
+    }
+
+    .post-card {
+        background: white;
+        padding: 4rem;
+        border-radius: 30px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow);
     }
 
     .post-content {
         line-height: 1.8;
-        font-size: 1.1rem;
-        color: #cbd5e1;
+        font-size: 1.15rem;
+        color: var(--text-color);
         white-space: pre-line;
     }
 
     .related-posts {
-        margin-top: 4rem;
-        border-top: 1px solid var(--border-color);
-        padding-top: 3rem;
+        margin-top: 8rem;
+        padding-top: 4rem;
+        border-top: 1px solid var(--glass-border);
+    }
+
+    .related-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .related-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 768px) {
+        .post-header {
+            padding: 8rem 1rem 4rem;
+        }
+
+        .post-header h1 {
+            font-size: 2.5rem;
+        }
+
+        .post-card {
+            padding: 2rem;
+        }
+
+        .post-container {
+            padding: 4rem 1rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="post-header">
-    <div style="margin-bottom: 1rem; color: var(--accent-color);">
-        <span>{{ post.created_at|date:"F d, Y" }}</span> &bull; <span>{{ post.author.username }}</span>
+    <div class="post-meta">
+        <span>{{ post.created_at|date:"F d, Y" }}</span> &bull; <span>BY {{ post.author.username }}</span>
     </div>
-    <h1 class="gradient-text" style="font-size: 3rem; max-width: 800px; margin: 0 auto;">{{ post.title }}</h1>
+    <h1>{{ post.title }}</h1>
 </div>
 
 <article class="post-container">
@@ -51,20 +112,19 @@
     <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
     {% endif %}
 
-    <div class="glass" style="padding: 2.5rem;">
+    <div class="post-card">
         <div class="post-content">
             {{ post.content }}
         </div>
     </div>
 
     <div class="related-posts">
-        <h3 style="margin-bottom: 2rem;">Recent Posts</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <h3 style="margin-bottom: 3rem; color: var(--text-color); font-size: 2rem; letter-spacing: -1px;">More From Our Blog</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem;">
             {% for recent in recent_posts %}
-            <div class="glass" style="padding: 1.5rem; cursor: pointer;"
-                onclick="window.location.href='{% url 'blog_detail' recent.id %}'">
-                <h4 style="margin-bottom: 0.5rem;">{{ recent.title }}</h4>
-                <small style="color: #94a3b8;">{{ recent.created_at|date:"M d, Y" }}</small>
+            <div class="related-card" onclick="window.location.href='{% url 'blog_detail' recent.id %}'">
+                <h4 style="margin-bottom: 1rem; color: var(--text-color); font-size: 1.2rem; line-height: 1.4;">{{ recent.title }}</h4>
+                <div style="color: var(--primary-color); font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">{{ recent.created_at|date:"M d, Y" }}</div>
             </div>
             {% endfor %}
         </div>

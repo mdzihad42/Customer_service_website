@@ -3,110 +3,117 @@
 {% block extra_css %}
 <style>
     .about-header {
-        padding: 8rem 2rem 4rem;
+        padding: 10rem 2rem 6rem;
         text-align: center;
-        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        background: var(--bg-alt);
+        position: relative;
+    }
+
+    .about-header h1 {
+        font-size: 3.5rem;
+        color: var(--text-color);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin-bottom: 1rem;
+    }
+
+    .about-header p {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     .about-section {
-        max-width: 1000px;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 4rem 2rem;
+        padding: 6rem 2rem;
     }
 
     .about-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 4rem;
+        gap: 5rem;
         align-items: center;
-        margin-bottom: 4rem;
+        margin-bottom: 6rem;
     }
 
     .highlight-card {
-        background: rgba(30, 41, 59, 0.7);
-        padding: 2rem;
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        margin-bottom: 2rem;
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 24px;
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-5px);
     }
 
     .mission-vision {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 2rem;
+        gap: 2.5rem;
+    }
+
+    .member-photo {
+        width: 160px;
+        height: 160px;
+        border-radius: 24px;
+        margin: 0 auto 1.5rem;
+        object-fit: cover;
+        border: 2px solid var(--secondary-color);
+        padding: 4px;
+        background: white;
+    }
+
+    .team-card {
+        padding: 3rem 2rem;
+        text-align: center;
     }
 
     @media (max-width: 768px) {
         .about-header {
-            padding: 6rem 1rem 3rem;
+            padding: 8rem 1rem 4rem;
         }
 
         .about-header h1 {
-            font-size: 2.5rem !important;
-        }
-
-        .about-section {
-            padding: 2rem 1rem;
+            font-size: 2.5rem;
         }
 
         .about-grid,
         .mission-vision {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 3rem;
         }
-    }
-
-    /* Team Section Styles */
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-    }
-
-    .card {
-        padding: 2rem;
-        transition: transform 0.3s;
-        text-align: center;
-    }
-
-    .card:hover {
-        transform: translateY(-10px);
-    }
-
-    .member-photo {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin: 0 auto 1.5rem;
-        object-fit: cover;
-        border: 3px solid var(--primary-color);
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="about-header">
-    <h1 class="gradient-text" style="font-size: 3.5rem;">{{ profile.title|default:"About Us" }}</h1>
-    <p style="color: #94a3b8; font-size: 1.2rem; margin-top: 1rem;">Driving Innovation, Delivering Excellence</p>
+    <h1>{{ profile.title|default:"About Us" }}</h1>
+    <p>Driving Innovation, Delivering Excellence in the Digital Age.</p>
 </div>
 
 <div class="about-section">
     <!-- Our Story -->
     <div class="about-grid">
         <div>
-            <h2 style="margin-bottom: 1.5rem; color: var(--primary-color);">Our Story</h2>
-            <div style="line-height: 1.8; color: #cbd5e1; white-space: pre-line;">
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary-color); font-size: 2.2rem; letter-spacing: -1px;">Our Story</h2>
+            <div style="line-height: 1.8; color: var(--text-muted); white-space: pre-line; font-size: 1.05rem;">
                 {{ profile.story|default:"We started with a simple belief: Technology should empower businesses..." }}
             </div>
         </div>
         <div>
             {% if profile.about_image %}
             <img src="{{ profile.about_image.url }}" alt="About Us"
-                style="width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                style="width: 100%; border-radius: 30px; box-shadow: 0 20px 40px rgba(130, 157, 149, 0.2);">
             {% else %}
             <div
-                style="width: 100%; height: 300px; background: #334155; border-radius: 20px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-building fa-4x" style="color: #64748b;"></i>
+                style="width: 100%; height: 350px; background: var(--bg-alt); border-radius: 30px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);">
+                <i class="fas fa-building fa-4x" style="color: var(--secondary-color);"></i>
             </div>
             {% endif %}
         </div>
@@ -115,58 +122,62 @@
     <!-- Mission & Vision -->
     <div class="mission-vision">
         <div class="highlight-card">
-            <i class="fas fa-bullseye" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
-            <h3 style="margin-bottom: 1rem;">Our Mission</h3>
-            <p style="color: #cbd5e1; line-height: 1.6;">
+            <div style="width: 50px; height: 50px; background: var(--bg-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <i class="fas fa-bullseye" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+            </div>
+            <h3 style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--text-color);">Our Mission</h3>
+            <p style="color: var(--text-muted); line-height: 1.7;">
                 {{ profile.mission|default:"To provide cutting-edge digital solutions that help businesses thrive in the modern world." }}
             </p>
         </div>
         <div class="highlight-card">
-            <i class="fas fa-eye" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 1rem;"></i>
-            <h3 style="margin-bottom: 1rem;">Our Vision</h3>
-            <p style="color: #cbd5e1; line-height: 1.6;">
+            <div style="width: 50px; height: 50px; background: var(--bg-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <i class="fas fa-eye" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+            </div>
+            <h3 style="margin-bottom: 1rem; font-size: 1.5rem; color: var(--text-color);">Our Vision</h3>
+            <p style="color: var(--text-muted); line-height: 1.7;">
                 {{ profile.vision|default:"To be the leading global provider of innovative web and software technologies." }}
             </p>
         </div>
     </div>
 
-    <!-- Meet the Team (Reused Logic) -->
-    <div style="margin-top: 4rem; text-align: center;">
-        <h2 class="gradient-text" style="margin-bottom: 3rem;">Our Leadership Team</h2>
-        <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+    <!-- Meet the Team -->
+    <div style="margin-top: 8rem; text-align: center;">
+        <h2 style="margin-bottom: 4rem; color: var(--text-color); font-size: 2.5rem; letter-spacing: -1px;">Our Leadership</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem;">
             {% for member in team %}
-            <div class="card glass team-card">
+            <div class="glass team-card" style="background: white;">
                 {% if member.photo %}
                 <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="member-photo">
                 {% else %}
                 <div class="member-photo"
-                    style="background: #334155; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #94a3b8;">
+                    style="background: var(--bg-alt); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--secondary-color);">
                     <i class="fas fa-user"></i>
                 </div>
                 {% endif %}
-                <h3>{{ member.name }}</h3>
-                <p style="color: var(--primary-color);">{{ member.role }}</p>
+                <h3 style="color: var(--text-color); font-size: 1.4rem;">{{ member.name }}</h3>
+                <p style="color: var(--primary-color); font-weight: 600; margin-top: 0.5rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">{{ member.role }}</p>
             </div>
             {% empty %}
-            <p>Team members not added yet.</p>
+            <p style="color: var(--text-muted);">Team members not added yet.</p>
             {% endfor %}
         </div>
     </div>
 
     <!-- Map Section -->
-    <div style="margin-top: 6rem; text-align: center;">
-        <h2 class="section-title" style="margin-bottom: 1rem;">Visit Us</h2>
+    <div style="margin-top: 10rem; text-align: center;">
+        <h2 style="margin-bottom: 1rem; color: var(--text-color); font-size: 2.5rem; letter-spacing: -1px;">Visit Our Office</h2>
         {% if office.address %}
-        <p style="color: #cbd5e1; margin-bottom: 3rem; font-size: 1.1rem;">
-            <i class="fas fa-map-marker-alt" style="color: var(--accent-color); margin-right: 0.5rem;"></i>
+        <p style="color: var(--text-muted); margin-bottom: 4rem; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <i class="fas fa-map-marker-alt" style="color: var(--primary-color);"></i>
             {{ office.address }}
         </p>
         {% endif %}
 
-        <div class="glass" style="padding: 1rem; border-radius: 20px; overflow: hidden; height: 450px;">
+        <div style="padding: 1.5rem; background: white; border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: var(--shadow); height: 500px; overflow: hidden;">
             <iframe
                 src="{% if office.map_embed_url %}{{ office.map_embed_url }}{% else %}https://maps.google.com/maps?q={{ office.address|urlencode }}&t=&z=15&ie=UTF8&iwloc=&output=embed{% endif %}"
-                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                width="100%" height="100%" style="border:0; border-radius: 20px;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>

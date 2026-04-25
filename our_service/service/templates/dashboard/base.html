@@ -4,25 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Digital Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Dashboard | DevSquad Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --sidebar-bg: #1e293b;
-            --text-color: #e2e8f0;
-            --primary-color: #3b82f6;
-            --danger-color: #ef4444;
-            --success-color: #22c55e;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-color: #F0F5F2;
+            --sidebar-bg: #FFFFFF;
+            --text-color: #2D3748;
+            --text-muted: #718096;
+            --primary-color: #829D95;
+            --secondary-color: #ADC2B5;
+            --danger-color: #E53E3E;
+            --success-color: #48BB78;
+            --border-color: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -33,94 +36,138 @@
             overflow: hidden;
         }
 
+        h1, h2, h3, h4, .brand {
+            font-family: 'Outfit', sans-serif;
+        }
+
         /* Sidebar */
         .sidebar {
-            width: 250px;
+            width: 280px;
             background: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
             border-right: 1px solid var(--border-color);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.02);
+            z-index: 10;
         }
 
         .brand {
-            padding: 1.5rem;
+            padding: 2rem;
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary-color);
             border-bottom: 1px solid var(--border-color);
+            letter-spacing: -0.5px;
         }
 
         .menu {
             flex: 1;
-            padding: 1rem;
+            padding: 1.5rem;
             list-style: none;
+            overflow-y: auto;
         }
 
         .menu li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .menu a {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 0.75rem 1rem;
-            color: #94a3b8;
+            padding: 0.8rem 1.2rem;
+            color: var(--text-muted);
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
         }
 
-        .menu a:hover,
+        .menu a:hover {
+            background: var(--bg-color);
+            color: var(--primary-color);
+        }
+
         .menu a.active {
             background: var(--primary-color);
             color: white;
+            box-shadow: 0 4px 12px rgba(130, 157, 149, 0.3);
         }
 
         .logout {
-            padding: 1rem;
+            padding: 1.5rem;
             border-top: 1px solid var(--border-color);
+        }
+
+        .logout a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.2rem;
+            color: var(--danger-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .logout a:hover {
+            background: rgba(229, 62, 62, 0.05);
         }
 
         /* Main Content */
         .main-content {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem;
-            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 40%);
+            padding: 2.5rem;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-color);
         }
 
         .card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
+            background: white;
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
         }
 
         .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 10px;
             text-decoration: none;
             cursor: pointer;
             border: none;
             font-size: 0.9rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            transition: all 0.2s;
         }
 
         .btn-primary {
             background: var(--primary-color);
             color: white;
+            box-shadow: 0 4px 10px rgba(130, 157, 149, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #6e867f;
+            transform: translateY(-1px);
         }
 
         .btn-danger {
@@ -130,46 +177,60 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         th,
         td {
             text-align: left;
-            padding: 1rem;
+            padding: 1.2rem;
             border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            color: #94a3b8;
-            font-weight: 600;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            background: #F8FAFC;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         /* Form Styles */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #94a3b8;
+            margin-bottom: 0.6rem;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         input,
         textarea,
         select {
             width: 100%;
-            padding: 0.75rem;
-            background: rgba(15, 23, 42, 0.6);
+            padding: 0.8rem 1rem;
+            background: white;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: white;
+            border-radius: 10px;
+            color: var(--text-color);
             outline: none;
+            font-size: 1rem;
+            transition: all 0.2s;
         }
 
-        input:focus {
+        input:focus, textarea:focus, select:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(130, 157, 149, 0.1);
         }
 
         /* Helpers */
@@ -180,10 +241,12 @@
         }
 
         .badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
             font-size: 0.8rem;
-            background: #334155;
+            font-weight: 600;
+            background: var(--bg-color);
+            color: var(--primary-color);
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -197,19 +260,19 @@
             <li><a href="{% url 'dashboard_home' %}"
                     class="{% if request.path == '/custom-admin/' %}active{% endif %}"><i class="fas fa-home"></i>
                     Dashboard</a></li>
-            <li><a href="{% url 'dashboard_services' %}"><i class="fas fa-code"></i> Services</a></li>
-            <li><a href="{% url 'dashboard_projects' %}"><i class="fas fa-briefcase"></i> Projects</a></li>
-            <li><a href="{% url 'dashboard_blogs' %}"><i class="fas fa-newspaper"></i> Blog</a></li>
-            <li><a href="{% url 'dashboard_team' %}"><i class="fas fa-users"></i> Team</a></li>
-            <li><a href="{% url 'dashboard_testimonials' %}"><i class="fas fa-comment-alt"></i> Testimonials</a></li>
-            <li><a href="{% url 'dashboard_faqs' %}"><i class="fas fa-question-circle"></i> FAQs</a></li>
-            <li><a href="{% url 'dashboard_contacts' %}"><i class="fas fa-envelope"></i> Messages</a></li>
-            <li><a href="{% url 'dashboard_pricing' %}"><i class="fas fa-tags"></i> Pricing</a></li>
-            <li><a href="{% url 'dashboard_tech_list' %}"><i class="fas fa-layer-group"></i> Tech Stack</a></li>
-            <li><a href="{% url 'dashboard_clients' %}"><i class="fas fa-handshake"></i> Partners</a></li>
-            <li><a href="{% url 'dashboard_profile' %}"><i class="fas fa-info-circle"></i> About Page</a></li>
-            <li><a href="{% url 'dashboard_office' %}"><i class="fas fa-cogs"></i> Settings & Office</a></li>
-            <li><a href="{% url 'dashboard_chat' %}"><i class="fas fa-comments"></i> Live Chat</a></li>
+            <li><a href="{% url 'dashboard_services' %}" class="{% if 'services' in request.path %}active{% endif %}"><i class="fas fa-code"></i> Services</a></li>
+            <li><a href="{% url 'dashboard_projects' %}" class="{% if 'projects' in request.path %}active{% endif %}"><i class="fas fa-briefcase"></i> Projects</a></li>
+            <li><a href="{% url 'dashboard_blogs' %}" class="{% if 'blogs' in request.path %}active{% endif %}"><i class="fas fa-newspaper"></i> Blog</a></li>
+            <li><a href="{% url 'dashboard_team' %}" class="{% if 'team' in request.path %}active{% endif %}"><i class="fas fa-users"></i> Team</a></li>
+            <li><a href="{% url 'dashboard_testimonials' %}" class="{% if 'testimonials' in request.path %}active{% endif %}"><i class="fas fa-comment-alt"></i> Testimonials</a></li>
+            <li><a href="{% url 'dashboard_faqs' %}" class="{% if 'faqs' in request.path %}active{% endif %}"><i class="fas fa-question-circle"></i> FAQs</a></li>
+            <li><a href="{% url 'dashboard_contacts' %}" class="{% if 'contacts' in request.path %}active{% endif %}"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="{% url 'dashboard_pricing' %}" class="{% if 'pricing' in request.path %}active{% endif %}"><i class="fas fa-tags"></i> Pricing</a></li>
+            <li><a href="{% url 'dashboard_tech_list' %}" class="{% if 'tech' in request.path %}active{% endif %}"><i class="fas fa-layer-group"></i> Tech Stack</a></li>
+            <li><a href="{% url 'dashboard_clients' %}" class="{% if 'clients' in request.path %}active{% endif %}"><i class="fas fa-handshake"></i> Partners</a></li>
+            <li><a href="{% url 'dashboard_profile' %}" class="{% if 'profile' in request.path %}active{% endif %}"><i class="fas fa-info-circle"></i> About Page</a></li>
+            <li><a href="{% url 'dashboard_office' %}" class="{% if 'office' in request.path %}active{% endif %}"><i class="fas fa-cogs"></i> Settings & Office</a></li>
+            <li><a href="{% url 'dashboard_chat' %}" class="{% if 'chat' in request.path %}active{% endif %}"><i class="fas fa-comments"></i> Live Chat</a></li>
         </ul>
         <div class="logout">
             <a href="{% url 'admin:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>

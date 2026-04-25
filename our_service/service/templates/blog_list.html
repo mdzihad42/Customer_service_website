@@ -3,42 +3,72 @@
 {% block extra_css %}
 <style>
     .header-section {
-        padding: 8rem 2rem 4rem;
+        padding: 10rem 2rem 6rem;
         text-align: center;
-        background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+        background: var(--bg-alt);
+        position: relative;
+    }
+
+    .header-section h1 {
+        font-size: 3.5rem;
+        color: var(--text-color);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        margin-bottom: 1rem;
+    }
+
+    .header-section p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
     }
 
     .blog-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 2.5rem;
-        padding: 2rem;
-        max-width: 1200px;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 3.5rem;
+        padding: 6rem 2rem;
+        max-width: 1300px;
         margin: 0 auto;
     }
 
     .blog-card {
-        border-radius: 16px;
+        background: white;
+        border-radius: 30px;
         overflow: hidden;
-        transition: transform 0.3s;
+        border: 1px solid var(--glass-border);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
         cursor: pointer;
+        box-shadow: var(--shadow);
     }
 
     .blog-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-12px);
+        border-color: var(--secondary-color);
+        box-shadow: 0 30px 60px rgba(130, 157, 149, 0.15);
+    }
+
+    .blog-img-wrapper {
+        width: 100%;
+        height: 240px;
+        overflow: hidden;
     }
 
     .blog-img {
         width: 100%;
-        height: 220px;
+        height: 100%;
         object-fit: cover;
+        transition: transform 0.8s ease;
+    }
+
+    .blog-card:hover .blog-img {
+        transform: scale(1.1);
     }
 
     .blog-content {
-        padding: 1.5rem;
+        padding: 2.5rem;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -46,51 +76,104 @@
 
     .blog-meta {
         font-size: 0.85rem;
-        color: var(--accent-color);
-        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
         display: flex;
-        justify-content: space-between;
+        gap: 1.5rem;
+    }
+
+    .blog-meta i {
+        margin-right: 0.4rem;
+    }
+
+    .blog-title {
+        font-size: 1.5rem;
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+        letter-spacing: -0.5px;
+    }
+
+    .blog-excerpt {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
     }
 
     .read-more {
         margin-top: auto;
         color: var(--primary-color);
-        font-weight: 600;
-        text-decoration: none;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        transition: gap 0.3s ease;
+    }
+
+    .blog-card:hover .read-more {
+        gap: 1rem;
+        color: var(--text-color);
+    }
+
+    @media (max-width: 768px) {
+        .header-section {
+            padding: 8rem 1rem 4rem;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+        }
+
+        .blog-grid {
+            grid-template-columns: 1fr;
+            padding: 2rem 1rem;
+            gap: 2.5rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="header-section">
-    <h1 class="gradient-text" style="font-size: 3rem;">Latest News & Insights</h1>
-    <p style="color: #94a3b8; margin-top: 1rem;">Trends, tutorials, and updates from our team</p>
+    <h1>Latest Insights</h1>
+    <p>Exploring the intersection of technology, design, and business growth.</p>
 </div>
 
 <div class="blog-grid">
     {% for post in posts %}
-    <div class="blog-card glass" onclick="window.location.href='{% url 'blog_detail' post.id %}'">
-        {% if post.image %}
-        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-img">
-        {% else %}
-        <div class="blog-img" style="background: #334155; display: flex; align-items: center; justify-content: center;">
-            <i class="fas fa-newspaper fa-3x" style="color: #64748b;"></i>
+    <div class="blog-card" onclick="window.location.href='{% url 'blog_detail' post.id %}'">
+        <div class="blog-img-wrapper">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-img">
+            {% else %}
+            <div class="blog-img" style="background: var(--bg-alt); display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-newspaper fa-4x" style="color: var(--secondary-color); opacity: 0.5;"></i>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
 
         <div class="blog-content">
             <div class="blog-meta">
                 <span><i class="fas fa-user"></i> {{ post.author.username }}</span>
                 <span><i class="fas fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
             </div>
-            <h3 style="margin-bottom: 0.8rem;">{{ post.title }}</h3>
-            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">{{ post.content|striptags|truncatewords:20 }}</p>
-            <div class="read-more">Read Article <i class="fas fa-arrow-right"></i></div>
+            <h3 class="blog-title">{{ post.title }}</h3>
+            <p class="blog-excerpt">{{ post.content|striptags|truncatewords:20 }}</p>
+            <div class="read-more">Read Full Article <i class="fas fa-arrow-right"></i></div>
         </div>
     </div>
     {% empty %}
-    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
-        <h3>No blog posts available yet.</h3>
+    <div style="text-align: center; grid-column: 1/-1; padding: 6rem 2rem; color: var(--text-muted);">
+        <i class="fas fa-edit fa-4x" style="margin-bottom: 1.5rem; opacity: 0.3;"></i>
+        <h3 style="font-size: 1.5rem;">No blog posts available yet.</h3>
     </div>
     {% endfor %}
 </div>
